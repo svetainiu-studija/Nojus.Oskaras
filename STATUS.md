@@ -9,23 +9,20 @@ Updated: 2026-08-26 · Phase: **0 — Set up** · Revenue: €0 (by design) · N
 - Recommendation delivered: pseudonymous trading-intelligence brand; spot-only public signals; perps never published, only via a validated lead account; affiliates to MiCA-authorised exchanges only; paid tier only after gates. Reselling rejected.
 - CHARTER v0.2, DECISIONS (D-001…D-014 proposed), PLAN-90-DAYS v0.2 created.
 - Independent review of v0.1 performed (verdict: "needs rework"); all ten major findings addressed in v0.2 (timeline re-based, G1 turned into an engineering gate, lead account brought inside validation, founder agreement, entity-before-income, payment-rail AUP check, GDPR/privacy, log anchoring and incident handling, baselines in G0, copy-trading economics stated).
+- Workspace repo live: github.com/svetainiu-studija/Nojus.Oskaras — plan documents committed; both founders have access (Nojus added as collaborator, invite accepted).
+- **Founders confirmed D-001…D-014** (2026-08-26). Risk limits agreed → D-015; budget ceiling €5k confirmed → D-016. CHARTER bumped to v1.0 (adopted).
 
 ## Open decisions (need founders)
 
-- D-003: pseudonymous + spot-only public signals + perps only via a validated lead account — confirm, or choose the named-person alternative.
-- D-005: planning target €500/month by month 12–18 with €5k as a 36-month-plus destination — confirm.
-- D-011: founder agreement terms (equity split, vesting, IP, leaver terms).
-- D-012: lead-account execution policy (manual mirroring; automation only as an explicitly approved execution project).
-- D-001, D-002, D-004, D-006…D-010, D-013, D-014 — confirm or comment.
-- Risk limits (task 0.2): max portfolio drawdown, per-trade risk, max concurrent positions, heat cap.
-- Budget scenario: €1k minimum vs up to €5k (task 0.11).
+- None blocking. D-015's position-count (6) and heat-cap (6%) numbers are Claude defaults — adjustable by a superseding decision until the holdout dates are locked (task 0.9).
+- Lawyer's answers (consult, task 3 below) will be logged as D-017+.
 
 ## Next actions
 
 | # | Action | Owner | Due |
 |---|---|---|---|
-| 1 | Confirm/override D-001…D-014; agree risk limits; choose budget scenario | Both | 2 Sep |
-| 2 | Founder agreement drafted and signed (template; lawyer review if budget allows) | Both | 9 Sep |
+| 1 | ~~Confirm/override D-001…D-014; agree risk limits; choose budget scenario~~ **Done 2026-08-26** (D-015, D-016) | Both | ✔ |
+| 2 | Founder agreement put in writing and signed. Founders affirm the mutual agreement holds and no one walks away — the written version exists to prevent misunderstanding, not to signal distrust: fix equity split, vesting, IP to the future MB, account/handle ownership, leaver terms (template; lawyer review if budget allows) | Both | 9 Sep |
 | 3 | Book lawyer consult; send the 6 questions from DECISIONS.md | Nojus | 2 Sep |
 | 4 | Check OKX Europe lead-trader (spot) eligibility and affiliate access; Kraken and Bitvavo affiliate access and promotion rules | Nojus | 2 Sep |
 | 5 | Verify Stripe / Paddle / Whop acceptable-use policies for a paid signal community | Nojus | 5 Sep |
@@ -57,3 +54,4 @@ None yet. Legal opinion is a soft blocker for G3 only (months away). Payment-rai
 ## Log
 
 - 2026-08-26 — Kick-off session. Research, recommendation, workspace v0.1 created; independent review returned "needs rework"; v0.2 issued addressing all major findings. Awaiting founders' confirmations.
+- 2026-08-26 — Workspace repo set up on GitHub; Nojus added as collaborator. Plan documents adopted into the repo. **Founders confirmed D-001…D-014; risk limits accepted (D-015); €5k budget ceiling confirmed (D-016). CHARTER v1.0 adopted.** Founders affirm mutual commitment; written founder agreement remains a week-2 deliverable (action 2). Documents merged to `main` via pull request.

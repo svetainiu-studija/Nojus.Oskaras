@@ -9,7 +9,7 @@ The shared workspace for our business: a pseudonymous crypto trading-intelligenc
 | Document | What it is |
 | --- | --- |
 | [CHARTER.md](CHARTER.md) | The constitution: objective, roles, revenue streams, non-negotiables, stage gates G0–G4, budget, kill criteria |
-| [DECISIONS.md](DECISIONS.md) | Every material decision (D-001…), its rationale and status. **D-001…D-014 are Proposed — founders must confirm or override** |
+| [DECISIONS.md](DECISIONS.md) | Every material decision (D-001…), its rationale and status. **D-001…D-016 accepted by both founders on 2026-08-26**; new decisions get new D-numbers |
 | [PLAN-90-DAYS.md](PLAN-90-DAYS.md) | 27 Aug – 25 Nov 2026: tasks, owners, checkpoints, the strategy research protocol, hypothesis template |
 | [STATUS.md](STATUS.md) | Live status: done / open decisions / next actions / risks / log. Updated at every weekly sync |
 | [RESEARCH-2026-08-legal-and-market.md](RESEARCH-2026-08-legal-and-market.md) | Verified legal (MiCA, MAR, Lithuania, affiliates, tax) and market research with sources |
