@@ -38,3 +38,29 @@ funding/latency review before any live use). Fail any → recorded as failed.
 Both fail → the round is over; per D-021 the founders choose between one
 final round and the §9 pivot discussion. No further variants of either
 hypothesis without a new pre-registration here.
+
+---
+
+## OUTCOME (2026-08-28): both FAILED — but HYP-004 is the strongest signal yet
+
+**EXP-006 / HYP-005 (4h): cleanly falsified.** 1,043 trades, +0.050 R, PF
+1.11 → **PF 0.96 under the 2× cost stress** (costs eat the fast version, as
+the pre-registration anticipated), 3/7 folds, and a 52.9% drawdown that
+breaches D-015 regardless. Fast momentum on these pairs does not survive
+costs. Closed.
+
+**EXP-005 / HYP-004 (daily): failed ONE check of five — p = 0.068 vs the
+0.05 requirement.** Everything else passed: 56 trades, expectancy +0.634 R
+with an entirely-positive CI80 (+0.10…+1.20), PF 2.45 (CI80 lower bound
+1.21), stress-robust (PF 2.32), execution-insensitive, 4/7 folds (the two
+negatives are the 2022 bear halves on tiny samples). Post-hoc diagnostic
+(analysis of the recorded trades, not a re-run): **SOL alone contributed
+71% of total profit**; excluding it, 52 trades at +0.199 R, PF 1.43 —
+still positive, much weaker. The p-fail and the concentration are the same
+fact seen twice: the result leans on one coin's great runs.
+
+**Status:** HYP-004 is recorded as FAILED per the rule. The honest
+resolution of "promising, p=0.068, concentrated" is **a larger, more
+diverse sample — not new parameters**. That would be the final round
+(D-021 allows exactly one more): same frozen config, wider candidate
+universe, stronger test, concentration criteria added. Founders decide.
