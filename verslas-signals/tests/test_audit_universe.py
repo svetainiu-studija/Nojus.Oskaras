@@ -36,19 +36,31 @@ class AuditTest(unittest.TestCase):
         stored = [(0, 100.0, 125.0, 99.0, 124.0, 240.0),
                   (D, 124.0, 149.0, 123.0, 148.0, 240.0)]
         r = compare(stored, rebuilt, 24)
-        self.assertEqual((r["checked"], r["price_bad"], r["vol_bad"]), (2, 0, 0))
+        self.assertEqual((r["checked"], r["price_material"], r["price_minor"],
+                          r["vol_bad"]), (2, 0, 0, 0))
 
     def test_compare_separates_price_and_volume(self):
         base = hour_bars(24)
         rebuilt = rebuild(base, D, 0)
         stored = [(0, 100.0, 125.0, 99.0, 124.0, 300.0)]  # wrong volume only
         r = compare(stored, rebuilt, 24)
-        self.assertEqual((r["checked"], r["price_bad"], r["vol_bad"]), (1, 0, 1))
+        self.assertEqual((r["checked"], r["price_material"], r["vol_bad"]), (1, 0, 1))
         self.assertAlmostEqual(r["vol_diffs"][0], 60.0 / 300.0)
-        stored = [(0, 100.0, 130.0, 99.0, 124.0, 240.0)]  # wrong high only
+        stored = [(0, 100.0, 130.0, 99.0, 124.0, 240.0)]  # high off by 4% = material
         r = compare(stored, rebuilt, 24)
-        self.assertEqual((r["price_bad"], r["vol_bad"]), (1, 0))
+        self.assertEqual((r["price_material"], r["price_minor"]), (1, 0))
         self.assertIn("high", r["price_examples"][0][1])
+        stored = [(0, 100.0, 125.01, 99.0, 124.0, 240.0)]  # high off by 0.008% = minor
+        r = compare(stored, rebuilt, 24)
+        self.assertEqual((r["price_material"], r["price_minor"]), (0, 1))
+
+    def test_volume_rel_uses_larger_side_denominator(self):
+        base = hour_bars(24)
+        rebuilt = rebuild(base, D, 0)
+        stored = [(0, 100.0, 125.0, 99.0, 124.0, 0.0)]  # native zero volume
+        r = compare(stored, rebuilt, 24)
+        self.assertEqual(r["vol_bad"], 1)
+        self.assertAlmostEqual(r["vol_diffs"][0], 1.0)  # 100%, not astronomical
 
     def test_partial_buckets_skipped(self):
         base = hour_bars(30)  # 1 full day + 6 hours

@@ -18,7 +18,7 @@ derive:
 	python3 -m engine.data.manifest data/derived --config pairs.yaml
 
 universe:
-	python3 -m engine.universe data/raw/okx/1d --out data/universe.csv
+	python3 -m engine.universe data/derived/okx/1d --out data/universe.csv
 
 test:
 	python3 -m unittest discover -s tests -v
