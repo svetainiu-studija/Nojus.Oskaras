@@ -9,7 +9,8 @@ checks), or **DIAGNOSTIC** (R3: narrative only, never a verdict).
 
 | Test | Runs | Status |
 |---|---|---|
-| A1 code review (2 independent sessions) | CLOUD | in progress |
+| A1 code review — statistics/costs/baselines session | CLOUD | **DONE — 1 VERIFIED ERROR (F1)** + minors, below |
+| A1 code review — simulator/strategy session | CLOUD | in progress |
 | A2 clean-room reproduction | LOCAL | pending (script ships after A1) |
 | A3 look-ahead property tests | CLOUD | **DONE — NO ERROR** |
 | A4 manual chart verification | FOUNDERS | pending (sample below) |
@@ -19,14 +20,14 @@ checks), or **DIAGNOSTIC** (R3: narrative only, never a verdict).
 | B4 availability-vs-strategy | CLOUD | **DONE — NO ERROR** |
 | B5 cross-venue price check | FOUNDERS | pending (trade list below) |
 | C1 costs.yaml vs reality | FOUNDERS | pending (Nojus) |
-| C2 cost double-count walkthrough | CLOUD | in progress (review session) |
-| C3 execution-semantics check | CLOUD | in progress (review session) |
+| C2 cost double-count walkthrough | CLOUD | **DONE — NO ERROR** (matched to 6 decimals, below) |
+| C3 execution-semantics check | CLOUD | in progress (simulator session; partial notes below) |
 | D1 SOL legitimacy | mixed | partially done (see D3; chart check in A4) |
 | D2 restricted-universe recomputation | LOCAL | pending |
 | D3 era analysis | CLOUD | **DONE — DIAGNOSTIC** (major, below) |
 | E1 independent stats recomputation | CLOUD | **DONE — NO ERROR** (one episode, below) |
 | E2 independent bootstrap | CLOUD | **DONE — NO ERROR** |
-| E3 baseline reproduction | CLOUD+LOCAL | methodology review in progress; local rerun pending |
+| E3 baseline reproduction | CLOUD+LOCAL | methodology review **DONE — VERIFIED ERROR F1**; compliant rerun = the R1 fix, pending |
 | E4 multiple-testing accounting | CLOUD | **DONE** (can only strengthen the failure) |
 | E5 concentration robustness | CLOUD | **DONE — DIAGNOSTIC** |
 
@@ -142,6 +143,79 @@ verified-error candidate.
 account from the live fee page, plus eyeballed spreads on 5 majors and 5
 small pool pairs. Compare with costs.yaml's values.
 
+## A1 (statistics/costs/baselines session) — findings
+
+Independent review session (did not build the code); every claim verified
+against actual lines and re-executed against the committed trades CSV and
+a synthetic run through the real Simulator.
+
+### F1 — VERIFIED ERROR (E3 criterion): the baseline is random-entry /
+### same-HOLDING-PERIOD, not random-entry / same-EXIT
+
+`engine/experiment.py:110-142`: `random_baseline` draws a holding period
+from the strategy's realized `bars_held` distribution and exits
+unconditionally at `open[i+1+h]`. No stop, no partial, no trail, no time
+stop, no regime flatten are applied to the random entries — but the spec
+(CLAUDE.md rule 5, protocol E3) says "random-entry / **same-exit**".
+Direction of bias: **favors the strategy** (the real exit stack applied to
+random entries would cut bear-regime holds and harvest drift
+asymmetrically, pushing the null's mean up → true p ≥ reported p).
+Severity: protocol-grade — E3's error criterion ("spec divergence") is
+met. Affects the whole family (EXP-001/003/005/006/007 share the
+function). **R1 consequence: fix and rerun the p-value check for the
+affected experiments** — materially EXP-007 (the verdict under audit) and
+EXP-005 (the only experiment whose verdict hinged solely on p). Honest
+expectation, stated before the rerun: since the bug favored the strategy
+and check 5 failed anyway (p = 0.1645), a compliant baseline most
+plausibly *worsens* p. The rule is the rule; we rerun regardless (R2).
+
+Minor findings in the same area (recorded; none verdict-capable): **F2**
+baseline entry pool truncated by `max(holds)+2`, structurally excluding
+the last ~80 bars per pair (~Q2-2025) from the null; **F3** p computed as
+r/N instead of the exact (r+1)/(N+1) — bias ≤ 0.0005 toward
+significance; **F4** return-denominator convention differs strategy vs
+baseline (≈ ×0.9985, negligible); **F5** zero-bar intraday holds clamped
+to 1 in the holds distribution (one trade affected); **F12**
+(methodology, spec-compliant): iid-uniform entries ignore the strategy's
+temporal clustering → the null is too narrow → reported p is if anything
+an underestimate — strengthens, never rescues, the failure. The fix
+implementation addresses F1-F4 together.
+
+### C2 — cost walkthrough: NO ERROR
+
+One winning trade (entry, 1/3 partial at target, final exit) and one
+losing trade (resting-stop fill, plus the gap-through variant) traced
+end-to-end through the real Simulator against hand arithmetic: matched to
+6 decimals. Each leg pays exactly one one-way cost (taker + half-spread +
+slippage) on its own notional — nothing double-counted, nothing
+wrong-signed. Stress applies the 2× multiplier exactly once per leg.
+Real-trade cross-check: stop-outs cluster at r ≈ −1.02…−1.09, matching
+−1 − 2c/stop_frac per cost tier. Conservative-direction modelling notes
+(consistent with declarations, no action): partial legs pay taker though
+a resting limit would earn maker (F7); gap-above-target partials fill at
+target, not the better open (F8).
+
+### Also verified clean by this session
+
+- **Holdout truncation airtight:** no bar ≥ 2025-07-01 can reach any
+  simulation or the baseline pool (loader skips at `HOLDOUT_START_MS`;
+  the simulator calendar is bounded independently).
+- **Seven-check wiring:** every check computed on the right quantity;
+  per-sim n = 48 exactly; same costs both sides of the baseline
+  comparison.
+- **Metrics reproduce exactly** (expectancy, PF, folds, regimes,
+  concentration 148.1% / −0.159 R); bootstrap is a standard percentile
+  bootstrap; fold threshold 4/7 matches the pre-registration.
+- **exit_reason_stats** table reproduces exactly (SOL's +21.36 R exits
+  via trailing stop — why "stop" averages +0.134).
+- Neutral notes on record: declared order-size assertion missing in the
+  simulator (positions here are far inside bounds — latent only, F6);
+  entries onto zero-volume bars canceled rather than postponed (docstring
+  divergence; zero occurrences in EXP-007 — F9); entry skipped when next
+  open gaps through the stop (defensible, rare — F10); concentration
+  share can exceed 100% when the ex-top book nets a loss (correct
+  ordering for check 6; robust under the E5 alternate denominator — F11).
+
 ## Process incidents
 
 - 2026-08-28 — Oskaras ran `python -m engine.exp003` (not an audit task);
@@ -155,9 +229,27 @@ small pool pairs. Compare with costs.yaml's values.
   the commands listed in this report / chat get run; experiment reports
   are history, not scratch output.
 
+## F1 fix plan (R1), fixed before implementation
+
+The compliant baseline is built **clean-room**: a self-contained
+`audit/` implementation written from the pre-registration text (stop =
+2×ATR(14) at entry; 1/3 partial at its R target; trail per policy after
+its R threshold; 15-bar time stop with skip-if-in-profit; BTC-SMA50
+regime flatten; same per-pair cost tiers), NOT by importing the engine's
+simulator — so an engine bug cannot hide in its own baseline. Entries
+drawn uniformly over the tradable in-universe (ts, pair) space with no
+end-truncation beyond what the strategy itself faces (fixes F2);
+p computed as (r+1)/(N+1) (fixes F3); strategy's return convention
+(fixes F4); 2,000 sims; fresh seed. Reruns the p check for **EXP-007**
+and **EXP-005** under their unchanged thresholds; results go to
+`research/experiments/EXP-007-AUDIT-E3.md` (and -005) — the original
+reports are history and stay untouched. This same clean-room module is
+then reused for A2 (reproducing the strategy's own 48 trades from the
+hypothesis text). Ships after the second A1 session lands.
+
 ## Pending local runs (scripts ship after the A1 review lands)
 
 B1 (`python -m engine.data.audit data/raw`), A2 clean-room rerun, B3
-universe recomputation, D2 restricted-universe reruns, E3 fresh-seed
-baseline reproduction. Sequenced after A1 so any code fixes land first
-(protocol §Sequencing).
+universe recomputation, D2 restricted-universe reruns, E3 compliant
+fresh-seed baseline (the F1 fix above). Sequenced after A1 so any code
+fixes land first (protocol §Sequencing).
