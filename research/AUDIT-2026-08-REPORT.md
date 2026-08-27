@@ -142,6 +142,19 @@ verified-error candidate.
 account from the live fee page, plus eyeballed spreads on 5 majors and 5
 small pool pairs. Compare with costs.yaml's values.
 
+## Process incidents
+
+- 2026-08-28 — Oskaras ran `python -m engine.exp003` (not an audit task);
+  the runner regenerated EXP-003.md / EXP-003.trades.csv on the *widened*
+  dataset, overwriting the historical Sprint B record (original: 4 trades
+  on DATASET-7a161580a8b6; rerun: 5 trades on 8b092d267524, verdict still
+  FAILED). Originals restored from git history; the accidental rerun's
+  content remains permanently readable at commit `0a63964`. Incidentally
+  informative (not a pre-registered test): HYP-002 stays failed on the
+  widened universe too. Rule going forward, audit window included: only
+  the commands listed in this report / chat get run; experiment reports
+  are history, not scratch output.
+
 ## Pending local runs (scripts ship after the A1 review lands)
 
 B1 (`python -m engine.data.audit data/raw`), A2 clean-room rerun, B3
