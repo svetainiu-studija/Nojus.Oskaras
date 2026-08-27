@@ -15,7 +15,7 @@ Scope discipline: Oskaras is building everything from zero at 10–20 h/week. An
 | 0.1 | Confirm or override D-001…D-014 in DECISIONS.md | Both | Statuses changed from Proposed |
 | 0.2 | Agree risk limits: max portfolio drawdown (proposal 25%), per-trade risk (proposal ≤ 1% of equity), max concurrent positions, portfolio-heat cap, max leverage for any future perps variant (proposal: none in year 1) | Both | Written into CHARTER §5 (G0 row) |
 | 0.3 | Founder agreement (D-011): equity, vesting, IP, account ownership, credential vault, leaver terms, runbook commitment | Both | Signed; template reviewed by the lawyer in 0.4 if budget allows |
-| 0.4 | Book a 1-hour consult with a Lithuanian fintech/crypto lawyer; send the 6 questions in DECISIONS.md | Nojus | Appointment booked; answers logged as D-017+ |
+| 0.4 | Book a 1-hour consult with a Lithuanian fintech/crypto lawyer; send the 6 questions in DECISIONS.md | Nojus | Appointment booked; answers logged as D-018+ |
 | 0.5 | Verify on your own accounts: OKX Europe lead-trader eligibility (spot) and requirements; OKX EU, Kraken and Bitvavo affiliate access from Lithuania and their promotion rules | Nojus | Findings in STATUS.md |
 | 0.6 | Verify payment-rail acceptable-use policies for a paid trading-signal community: Stripe, Paddle, Whop (D-007) | Nojus | Which rails permit it, in writing (support ticket or policy quote) |
 | 0.7 | Brand: shortlist 5 names; check domain, Telegram handle, X and YouTube handle availability; pick one; reserve handles | Nojus | Name chosen, handles reserved |

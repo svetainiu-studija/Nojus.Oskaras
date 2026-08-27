@@ -15,7 +15,8 @@ Updated: 2026-08-26 · Phase: **0 — Set up** · Revenue: €0 (by design) · N
 ## Open decisions (need founders)
 
 - None blocking. D-015's position-count (6) and heat-cap (6%) numbers are Claude defaults — adjustable by a superseding decision until the holdout dates are locked (task 0.9).
-- Lawyer's answers (consult, task 3 below) will be logged as D-017+.
+- **D-017 (Proposed, needs founders):** AI analyses never count as the written legal opinion; written fintech-lawyer opinion on copy-trading required before followers are enabled (adds to G2). Raised after a ChatGPT analysis (2026-08-27) flagged copy-trading as the highest-risk stream.
+- Lawyer's answers (consult, task 3 below) will be logged as D-018+.
 
 ## Next actions
 
@@ -23,7 +24,7 @@ Updated: 2026-08-26 · Phase: **0 — Set up** · Revenue: €0 (by design) · N
 |---|---|---|---|
 | 1 | ~~Confirm/override D-001…D-014; agree risk limits; choose budget scenario~~ **Done 2026-08-26** (D-015, D-016) | Both | ✔ |
 | 2 | Founder agreement put in writing and signed. Founders affirm the mutual agreement holds and no one walks away — the written version exists to prevent misunderstanding, not to signal distrust: fix equity split, vesting, IP to the future MB, account/handle ownership, leaver terms (template; lawyer review if budget allows) | Both | 9 Sep |
-| 3 | Send the 6 questions to the lawyer (Oskaras's cousin, a lawyer, offered to help — ready-to-send Lithuanian version in `legal/QUESTIONS-FOR-LAWYER.md`). **Answers must be in writing** (email suffices). Any "unclear / it depends" answer → that question goes to a fintech specialist before G3. Answers logged as D-017+ | Nojus | 2 Sep |
+| 3 | Send the 6 questions to the lawyer (Oskaras's cousin, a lawyer, offered to help — ready-to-send Lithuanian version in `legal/QUESTIONS-FOR-LAWYER.md`). **Answers must be in writing** (email suffices). Any "unclear / it depends" answer → that question goes to a fintech specialist before G3. Answers logged as D-018+. **Note 2026-08-27: a ChatGPT-generated analysis was received and archived as `legal/ANALYSIS-2026-08-AI-SECOND-OPINION.md` — useful research, but it does NOT satisfy this task; the cousin's own written answers are still needed** | Nojus | 2 Sep |
 | 4 | Check OKX Europe lead-trader (spot) eligibility and affiliate access; Kraken and Bitvavo affiliate access and promotion rules | Nojus | 2 Sep |
 | 5 | Verify Stripe / Paddle / Whop acceptable-use policies for a paid signal community | Nojus | 5 Sep |
 | 6 | Brand name shortlist (5) with handle/domain availability; reserve handles | Nojus | 5 Sep |
@@ -55,3 +56,4 @@ None yet. Legal opinion is a soft blocker for G3 only (months away). Payment-rai
 
 - 2026-08-26 — Kick-off session. Research, recommendation, workspace v0.1 created; independent review returned "needs rework"; v0.2 issued addressing all major findings. Awaiting founders' confirmations.
 - 2026-08-26 — Workspace repo set up on GitHub; Nojus added as collaborator. Plan documents adopted into the repo. **Founders confirmed D-001…D-014; risk limits accepted (D-015); €5k budget ceiling confirmed (D-016). CHARTER v1.0 adopted.** Founders affirm mutual commitment; written founder agreement remains a week-2 deliverable (action 2). Documents merged to `main` via pull request.
+- 2026-08-27 — Second AI legal analysis (ChatGPT) received from Oskaras and archived with provenance in `legal/`. Largely consistent with the first research pass; escalates copy-trading to highest-risk stream → D-017 proposed (AI ≠ legal opinion; written fintech-lawyer opinion required before followers enabled). One discrepancy flagged for the lawyer (MiCA advice scope vs MiFID II). Task 3 (cousin's written answers) remains open.
