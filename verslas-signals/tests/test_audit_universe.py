@@ -35,24 +35,28 @@ class AuditTest(unittest.TestCase):
         self.assertEqual(b0[7], 24)               # fully covered
         stored = [(0, 100.0, 125.0, 99.0, 124.0, 240.0),
                   (D, 124.0, 149.0, 123.0, 148.0, 240.0)]
-        checked, mismatched, _ = compare(stored, rebuilt, 24)
-        self.assertEqual((checked, mismatched), (2, 0))
+        r = compare(stored, rebuilt, 24)
+        self.assertEqual((r["checked"], r["price_bad"], r["vol_bad"]), (2, 0, 0))
 
-    def test_compare_flags_bad_volume(self):
+    def test_compare_separates_price_and_volume(self):
         base = hour_bars(24)
         rebuilt = rebuild(base, D, 0)
-        stored = [(0, 100.0, 125.0, 99.0, 124.0, 300.0)]  # wrong volume
-        checked, mismatched, examples = compare(stored, rebuilt, 24)
-        self.assertEqual((checked, mismatched), (1, 1))
-        self.assertIn("volume", examples[0][1])
+        stored = [(0, 100.0, 125.0, 99.0, 124.0, 300.0)]  # wrong volume only
+        r = compare(stored, rebuilt, 24)
+        self.assertEqual((r["checked"], r["price_bad"], r["vol_bad"]), (1, 0, 1))
+        self.assertAlmostEqual(r["vol_diffs"][0], 60.0 / 300.0)
+        stored = [(0, 100.0, 130.0, 99.0, 124.0, 240.0)]  # wrong high only
+        r = compare(stored, rebuilt, 24)
+        self.assertEqual((r["price_bad"], r["vol_bad"]), (1, 0))
+        self.assertIn("high", r["price_examples"][0][1])
 
     def test_partial_buckets_skipped(self):
         base = hour_bars(30)  # 1 full day + 6 hours
         rebuilt = rebuild(base, D, 0)
         stored = [(0, 100.0, 125.0, 99.0, 124.0, 240.0),
                   (D, 124.0, 131.0, 123.0, 130.0, 60.0)]
-        checked, _, _ = compare(stored, rebuilt, 24)
-        self.assertEqual(checked, 1)  # partial second day not compared
+        r = compare(stored, rebuilt, 24)
+        self.assertEqual(r["checked"], 1)  # partial second day not compared
 
     def test_offset_detection(self):
         utc8 = [(57_600_000 + i * D, 1, 1, 1, 1, 1) for i in range(5)]
@@ -63,6 +67,30 @@ class AuditTest(unittest.TestCase):
         rows = [(i * H, 1, 1, 1, 1, 0.0 if 3 <= i <= 6 else 5.0) for i in range(10)]
         runs = zero_volume_runs(rows)
         self.assertEqual(runs, [(3 * H, 4)])
+
+
+class DeriveTest(unittest.TestCase):
+    def test_derive_writes_complete_buckets_only(self):
+        import csv as _csv
+        import tempfile
+        from engine.data.derive import derive_file
+
+        with tempfile.TemporaryDirectory() as d:
+            src = Path(d) / "1h" / "BTC-USDT.csv"
+            src.parent.mkdir(parents=True)
+            with src.open("w", newline="") as f:
+                w = _csv.writer(f)
+                w.writerow(["timestamp", "open", "high", "low", "close", "volume"])
+                for ts, o, h, l, c, v in hour_bars(30):  # 1 full day + 6h
+                    w.writerow([ts, o, h, l, c, v])
+            out_root = Path(d) / "derived"
+            written = derive_file(src, out_root)
+            self.assertEqual(written["1d"], 1)   # partial day dropped
+            self.assertEqual(written["4h"], 7)   # 30h -> 7 full 4h buckets
+            with (out_root / "1d" / "BTC-USDT.csv").open() as f:
+                rows = [r for r in _csv.reader(f)][1:]
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(float(rows[0][5]), 240.0)  # summed volume
 
 
 class UniverseTest(unittest.TestCase):

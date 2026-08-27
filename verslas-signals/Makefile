@@ -13,6 +13,10 @@ check:
 audit:
 	python3 -m engine.data.audit data/raw
 
+derive:
+	python3 -m engine.data.derive data/raw/okx/1h data/derived/okx
+	python3 -m engine.data.manifest data/derived --config pairs.yaml
+
 universe:
 	python3 -m engine.universe data/raw/okx/1d --out data/universe.csv
 

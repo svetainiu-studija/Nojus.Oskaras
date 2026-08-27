@@ -78,24 +78,36 @@ def rebuild(base_rows, tf_ms: int, offset: int) -> dict:
 
 
 def compare(stored_rows, rebuilt: dict, bars_per_bucket: int):
-    """Compare stored bars with rebuilt buckets that are fully covered."""
-    checked = mismatched = 0
-    examples = []
+    """Compare stored bars with rebuilt buckets that are fully covered.
+
+    Price disagreement is structural (same trades must make the same candle);
+    volume disagreement between an exchange's native higher-timeframe candles
+    and the sum of its lower-timeframe candles is a known venue artifact, so it
+    is counted separately and reported with magnitudes (see D-019: canonical
+    4h/1d bars are derived from 1h, so volume differences in the native files
+    cannot leak into research).
+    """
+    checked = price_bad = vol_bad = 0
+    price_examples = []
+    vol_diffs = []
     for ts, o, h, l, c, v in stored_rows:
         b = rebuilt.get(ts)
         if b is None or b[7] != bars_per_bucket:
             continue
         checked += 1
-        bad = [name for name, sv, rv in
-               (("open", o, b[1]), ("high", h, b[2]), ("low", l, b[3]), ("close", c, b[4]))
-               if abs(sv - rv) > PRICE_RTOL * max(abs(sv), 1e-12)]
-        if abs(v - b[5]) > VOLUME_RTOL * max(v, 1e-12):
-            bad.append("volume")
-        if bad:
-            mismatched += 1
-            if len(examples) < 3:
-                examples.append((day(ts), bad))
-    return checked, mismatched, examples
+        badp = [name for name, sv, rv in
+                (("open", o, b[1]), ("high", h, b[2]), ("low", l, b[3]), ("close", c, b[4]))
+                if abs(sv - rv) > PRICE_RTOL * max(abs(sv), 1e-12)]
+        if badp:
+            price_bad += 1
+            if len(price_examples) < 3:
+                price_examples.append((day(ts), badp))
+        rel = abs(v - b[5]) / max(v, 1e-12)
+        if rel > VOLUME_RTOL:
+            vol_bad += 1
+            vol_diffs.append(rel)
+    return {"checked": checked, "price_bad": price_bad, "vol_bad": vol_bad,
+            "price_examples": price_examples, "vol_diffs": vol_diffs}
 
 
 def zero_volume_runs(rows, min_len: int = 3):
@@ -157,26 +169,40 @@ def main(argv=None) -> None:
                     continue
                 tf_ms = TIMEFRAME_MS[target]
                 bars_per_bucket = tf_ms // TIMEFRAME_MS["1h"]
-                tot_checked = tot_mismatched = 0
-                worst = []
+                tot = {"checked": 0, "price_bad": 0, "vol_bad": 0}
+                all_vol_diffs = []
+                worst_price = []
                 for name, stored in sorted(data[target].items()):
                     base_rows = data["1h"].get(name)
                     if not base_rows:
                         continue
                     rebuilt = rebuild(base_rows, tf_ms, tf_offset[target])
-                    ch, mi, ex = compare(stored, rebuilt, bars_per_bucket)
-                    tot_checked += ch
-                    tot_mismatched += mi
-                    if mi and len(worst) < 5:
-                        worst.append((name, mi, ch, ex))
-                rate = (tot_mismatched / tot_checked) if tot_checked else 0.0
-                status = "OK" if rate <= MISMATCH_BUDGET else "FAIL"
-                if rate > MISMATCH_BUDGET:
+                    r = compare(stored, rebuilt, bars_per_bucket)
+                    for k in tot:
+                        tot[k] += r[k]
+                    all_vol_diffs.extend(r["vol_diffs"])
+                    if r["price_bad"] and len(worst_price) < 5:
+                        worst_price.append((name, r["price_bad"], r["checked"],
+                                            r["price_examples"]))
+                checked = tot["checked"]
+                price_rate = (tot["price_bad"] / checked) if checked else 0.0
+                vol_rate = (tot["vol_bad"] / checked) if checked else 0.0
+                status = "OK" if price_rate <= MISMATCH_BUDGET else "FAIL"
+                if price_rate > MISMATCH_BUDGET:
                     fail = True
-                print(f"  {target}: {tot_checked} bars compared, {tot_mismatched} mismatched "
-                      f"({rate:.4%}) -> {status}")
-                for name, mi, ch, ex in worst:
-                    print(f"    {name}: {mi}/{ch} mismatched, e.g. {ex}")
+                print(f"  {target}: {checked} bars compared | price mismatches "
+                      f"{tot['price_bad']} ({price_rate:.4%}) -> {status}")
+                for name, mi, ch, ex in worst_price:
+                    print(f"    {name}: {mi}/{ch} price-mismatched, e.g. {ex}")
+                if all_vol_diffs:
+                    all_vol_diffs.sort()
+                    n = len(all_vol_diffs)
+                    med = all_vol_diffs[n // 2]
+                    p95 = all_vol_diffs[min(n - 1, int(n * 0.95))]
+                    print(f"    volume differences vs native (INFO, not a failure — "
+                          f"D-019 derives canonical bars from 1h): {tot['vol_bad']} bars "
+                          f"({vol_rate:.4%}) beyond {VOLUME_RTOL:.1%}; rel diff "
+                          f"median {med:.2%}, p95 {p95:.2%}, max {all_vol_diffs[-1]:.2%}")
 
         print(f"\n=== {ex_dir.name}: C. zero-volume runs (>=3 bars) ===")
         any_run = False
