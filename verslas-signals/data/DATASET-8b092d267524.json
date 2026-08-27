@@ -1,0 +1,788 @@
+{
+  "config": "# Research universe \u00e2\u20ac\u201d DRAFT (~30 liquid OKX spot USDT pairs).\n# The final universe is fixed by a liquidity rule (e.g. top-30 by 30-day volume,\n# applied as-of each rebalance date to avoid survivorship bias) BEFORE the\n# holdout dates are locked. Edit freely until then; after lock, changes = new dataset.\nexchange: okx\nquote: USDT\npairs:\n  - BTC/USDT\n  - ETH/USDT\n  - SOL/USDT\n  - XRP/USDT\n  - DOGE/USDT\n  - ADA/USDT\n  - TRX/USDT\n  - LINK/USDT\n  - AVAX/USDT\n  - DOT/USDT\n  - LTC/USDT\n  - BCH/USDT\n  - UNI/USDT\n  - ATOM/USDT\n  - XLM/USDT\n  - ETC/USDT\n  - FIL/USDT\n  - APT/USDT\n  - ARB/USDT\n  - OP/USDT\n  - INJ/USDT\n  - SUI/USDT\n  - NEAR/USDT\n  - AAVE/USDT\n  - ALGO/USDT\n  - SAND/USDT\n  - MANA/USDT\n  - GRT/USDT\n  - CRV/USDT\n  - SHIB/USDT\n  # --- widened candidate pool (D-022 / Sprint E). The downloader skips any\n  # pair OKX does not list; skips are recorded in the run log (I2). ---\n  - PEPE/USDT\n  - WIF/USDT\n  - BONK/USDT\n  - FLOKI/USDT\n  - ORDI/USDT\n  - JUP/USDT\n  - TIA/USDT\n  - SEI/USDT\n  - STX/USDT\n  - IMX/USDT\n  - RENDER/USDT\n  - FET/USDT\n  - LDO/USDT\n  - MKR/USDT\n  - COMP/USDT\n  - SNX/USDT\n  - EGLD/USDT\n  - ICP/USDT\n  - HBAR/USDT\n  - CHZ/USDT\n  - ENJ/USDT\n  - DYDX/USDT\n  - GALA/USDT\n  - APE/USDT\n  - MINA/USDT\n  - FLOW/USDT\n  - XTZ/USDT\n  - EOS/USDT\n  - THETA/USDT\n  - IOTA/USDT\n  - AR/USDT\n  - WLD/USDT\n  - OKB/USDT\n  - KSM/USDT\n  - ZIL/USDT\n  - NEO/USDT\n  - QTUM/USDT\ntimeframes: [\"1d\", \"4h\", \"1h\"]\nsince: \"2021-01-01\"\n",
+  "dataset_id": "8b092d267524",
+  "files": {
+    "okx/1d/AAVE-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "2464bc045ab6ff163b1a90f24c5e2df944e8cac65d92d8c4835337f698e88065"
+    },
+    "okx/1d/ADA-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "1848b50073771585f21d75ad9e1653209185c273c6fb71a2c07bf818b66b5816"
+    },
+    "okx/1d/ALGO-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "32f7f80eb1cd59752df352abb8d047de2f0c809fca1ff56a720eedbceb5d5dae"
+    },
+    "okx/1d/APE-USDT.csv": {
+      "first_ts": 1647561600000,
+      "last_ts": 1787702400000,
+      "rows": 1623,
+      "sha256": "120236846db2448a204010131312d46bc2f1201708f6799d9bac467764169642"
+    },
+    "okx/1d/APT-USDT.csv": {
+      "first_ts": 1666224000000,
+      "last_ts": 1787702400000,
+      "rows": 1407,
+      "sha256": "1a6ce4289545cb93a5ddedf5be8bffa18d585cc2fa63d887df9d2c6d48b73066"
+    },
+    "okx/1d/AR-USDT.csv": {
+      "first_ts": 1640390400000,
+      "last_ts": 1787702400000,
+      "rows": 1706,
+      "sha256": "5d3317467c113f2e3222cd5798966b2c0c83940b2ada834ea1534aa0ed28a74f"
+    },
+    "okx/1d/ARB-USDT.csv": {
+      "first_ts": 1679616000000,
+      "last_ts": 1787702400000,
+      "rows": 1252,
+      "sha256": "10f5f6281ac957efc168fe665b0843219386f43098fc7ab9e6ab6c206c21dfde"
+    },
+    "okx/1d/ATOM-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "8272056da4f20f8e9776ac241b7a4d1dc24bdd77db38b97ab5643ff157350ff5"
+    },
+    "okx/1d/AVAX-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "0a00ea521d203b082b9d48e2cf88ccaa9566b9dcc317d9c1c844514b8cdd5640"
+    },
+    "okx/1d/BCH-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "f81fb0628d4a13a6ee03de00249f383db518b3db976f31395fcf35b767e49edf"
+    },
+    "okx/1d/BONK-USDT.csv": {
+      "first_ts": 1704758400000,
+      "last_ts": 1787702400000,
+      "rows": 961,
+      "sha256": "a36cf2a7d989a0e869cac702de9f2dfb3090e6251cf414301b3dc9cae9716a06"
+    },
+    "okx/1d/BTC-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "c4206a802671cb0fc869fbf81cb1cd99b35bcda3390cb70e12c71266b5deac0d"
+    },
+    "okx/1d/CHZ-USDT.csv": {
+      "first_ts": 1614816000000,
+      "last_ts": 1787702400000,
+      "rows": 2002,
+      "sha256": "ce35d6d0da93be680f9fc4937ac278ad3361caec8db9e2b5888f4e3fa9a7c645"
+    },
+    "okx/1d/COMP-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "7f545079a6ed0d758466770d639d1e607e09a22034628d852b664a345b726d87"
+    },
+    "okx/1d/CRV-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "886a5b2215ecaed9447423fab94c7f9b8f67cc7224bfa72ca2aeec7c14506d1e"
+    },
+    "okx/1d/DOGE-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "84897e8bec6f326bb63b2f4ce6a18af0d9d72eb853f2da016c4ca90e0605951d"
+    },
+    "okx/1d/DOT-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "61750daf29de88d396b6592cafd7c753de913196b2e4001706475c7676954f09"
+    },
+    "okx/1d/DYDX-USDT.csv": {
+      "first_ts": 1631145600000,
+      "last_ts": 1787702400000,
+      "rows": 1813,
+      "sha256": "3b053de8e427c075615775aa11dab552361c42a8e8ae0369caf000f0ca202507"
+    },
+    "okx/1d/EGLD-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "64be08dd6a0176549de8b2a778e3c98613cece754ba91b5132795bf48776160a"
+    },
+    "okx/1d/ENJ-USDT.csv": {
+      "first_ts": 1696982400000,
+      "last_ts": 1787702400000,
+      "rows": 1051,
+      "sha256": "83f0cdd4e34ddf0e94afe2cd729433cad42fb54a61d836fc92c2eae3d9e83237"
+    },
+    "okx/1d/ETC-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "71325bd28f2144cf441fa8baa47f31a4784a7ba111781812c0e04a85c8514e2e"
+    },
+    "okx/1d/ETH-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "c033b547906d2e7a3ba37d3cd8bbd0fe9076d4d82e7b8b32a627494b923b401d"
+    },
+    "okx/1d/FET-USDT.csv": {
+      "first_ts": 1700870400000,
+      "last_ts": 1787702400000,
+      "rows": 1006,
+      "sha256": "cfed42a18f9270699cffd7c2973ffb52f5f3b8b0f5b8d26e3a9f4016beebb914"
+    },
+    "okx/1d/FIL-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "7a1ca937db11d46ffd053c42783647f2b0ab0701ad6001e5be05059e34b7d0f9"
+    },
+    "okx/1d/FLOKI-USDT.csv": {
+      "first_ts": 1671235200000,
+      "last_ts": 1787702400000,
+      "rows": 1349,
+      "sha256": "ee5a23be487bf6324632d4d1b1c1ca502922ea681808d9bd355fc6c99fee1056"
+    },
+    "okx/1d/FLOW-USDT.csv": {
+      "first_ts": 1614124800000,
+      "last_ts": 1787702400000,
+      "rows": 2010,
+      "sha256": "56b44946914bd48ab66649eb983cd05b1bb00e7baf762e3dd142e4a7bf6d3584"
+    },
+    "okx/1d/GALA-USDT.csv": {
+      "first_ts": 1632355200000,
+      "last_ts": 1787702400000,
+      "rows": 1799,
+      "sha256": "f0c3ba046aace56ee1b52688c1a703669e8aedda8242d2c3766dd2fa9526d174"
+    },
+    "okx/1d/GRT-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "df160a65c298e61a5abee11e49fe37cb32d1fc3f154ee82cec1f47878f690c01"
+    },
+    "okx/1d/HBAR-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "e684179ac39b29bc0ae8d8f81f7bba5b95c11e2d8cc20240d9bc18851715a11b"
+    },
+    "okx/1d/ICP-USDT.csv": {
+      "first_ts": 1620691200000,
+      "last_ts": 1787702400000,
+      "rows": 1934,
+      "sha256": "24eae6670e4c088bafd209542648d1b3680833c1ce73fea9a2264255f0bbf164"
+    },
+    "okx/1d/IMX-USDT.csv": {
+      "first_ts": 1636156800000,
+      "last_ts": 1787702400000,
+      "rows": 1755,
+      "sha256": "743ddec6f4e47e5164e373a5aafe4234ef18cc35f1ad28c8e1365e06ed97815c"
+    },
+    "okx/1d/INJ-USDT.csv": {
+      "first_ts": 1701388800000,
+      "last_ts": 1787702400000,
+      "rows": 1000,
+      "sha256": "bd6b166c97c5602933a1f08b0767612c590c870b747fc34db77a2d7010373794"
+    },
+    "okx/1d/IOTA-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "310fa27ee611afb2ff9c348112f3e8a9273544f44faa33c0d5314c745ceca093"
+    },
+    "okx/1d/JUP-USDT.csv": {
+      "first_ts": 1706745600000,
+      "last_ts": 1787702400000,
+      "rows": 938,
+      "sha256": "edd059ae493d4d61f7012bef41821d7b72ada18bd26a9ef5b1e79b22c660b1ce"
+    },
+    "okx/1d/KSM-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "637e57f4c11576936465f7162625c7dcc883f8b44d1d3efde14615acfaf79214"
+    },
+    "okx/1d/LDO-USDT.csv": {
+      "first_ts": 1662163200000,
+      "last_ts": 1787702400000,
+      "rows": 1454,
+      "sha256": "085deb527139ed62505758e0e019deb6b8d79c424b2c4d70961400ab22461e54"
+    },
+    "okx/1d/LINK-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "14b6af47ea15646c544675c5caa6ef3f5a40ace5e8a3cd272356b71e98e9f373"
+    },
+    "okx/1d/LTC-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "221b987e1773c8bb66fd1d8c572e80614994d63a3c0ffcfaeae792c76d860960"
+    },
+    "okx/1d/MANA-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "30f8f457b4c16bae8b7d3d73ca1bbde05c0f087b0a5509b8071b133110ced0cb"
+    },
+    "okx/1d/MINA-USDT.csv": {
+      "first_ts": 1622505600000,
+      "last_ts": 1787702400000,
+      "rows": 1913,
+      "sha256": "df604c80355d664f61221b07b3e433bdd6d745a8dd3fbd51087fa7cb3cbbb65e"
+    },
+    "okx/1d/NEAR-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "9057a3527cb053f587acbb237fb804093e25161aefb68ed7007590062d4df818"
+    },
+    "okx/1d/NEO-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "ddd4612db6a1ce8304015be0000006de9994ec0642ea3c70e74ce424d7ac0fac"
+    },
+    "okx/1d/OKB-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "bfe994f2433b7c05773977f95c6052452c27c46bcd20805a5d32bf67bf95f7a5"
+    },
+    "okx/1d/OP-USDT.csv": {
+      "first_ts": 1654041600000,
+      "last_ts": 1787702400000,
+      "rows": 1548,
+      "sha256": "43acda3d6a05038da72960d0da487ff6c705f94cf51e8b3c790559f1e9e32325"
+    },
+    "okx/1d/ORDI-USDT.csv": {
+      "first_ts": 1684627200000,
+      "last_ts": 1787702400000,
+      "rows": 1194,
+      "sha256": "ade6e28b521e3b27455c6dce27ac1eab20dddf17a4ef8c6eb7efcd81529947d3"
+    },
+    "okx/1d/PEPE-USDT.csv": {
+      "first_ts": 1682985600000,
+      "last_ts": 1787702400000,
+      "rows": 1213,
+      "sha256": "5697beddb65a7a043cd5749343e85e9cca3a39a45cc81028c55ba14b1bb0cb98"
+    },
+    "okx/1d/QTUM-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "b12f2956ea0b3ac7b9bf8cc9431ca8088fc5e00e1785d7d545191823f28a074b"
+    },
+    "okx/1d/RENDER-USDT.csv": {
+      "first_ts": 1721088000000,
+      "last_ts": 1787702400000,
+      "rows": 772,
+      "sha256": "575ecb4f23b268793eee4cf21d3e41a80a757c90f53519dbfa628b5214b259a0"
+    },
+    "okx/1d/SAND-USDT.csv": {
+      "first_ts": 1616112000000,
+      "last_ts": 1787702400000,
+      "rows": 1987,
+      "sha256": "8388aea5c134dff874871abb018db93def1810fde0410d11d6cd7207e1b3e478"
+    },
+    "okx/1d/SEI-USDT.csv": {
+      "first_ts": 1763164800000,
+      "last_ts": 1787702400000,
+      "rows": 285,
+      "sha256": "56824272df3b48b935f228909da6ee5486abb76f33c403571bc8700d3abbd7b0"
+    },
+    "okx/1d/SHIB-USDT.csv": {
+      "first_ts": 1620518400000,
+      "last_ts": 1787702400000,
+      "rows": 1936,
+      "sha256": "eb55dc8054b3eca26d204ce6ad8e380d8982a3453db4bff470cb049c7c772f09"
+    },
+    "okx/1d/SNX-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "51359a46bc74718114898dd285acc57a688af29200620afe62132d917f7fbcee"
+    },
+    "okx/1d/SOL-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "3ddf4959afc214c7df7901474a3b2662276d10e9888f4265c2187d49118d2212"
+    },
+    "okx/1d/STX-USDT.csv": {
+      "first_ts": 1614902400000,
+      "last_ts": 1787702400000,
+      "rows": 2001,
+      "sha256": "62601065f0f7e0c96e0b727cef5febdb991e75c227be4eed5da62d22197c317f"
+    },
+    "okx/1d/SUI-USDT.csv": {
+      "first_ts": 1683158400000,
+      "last_ts": 1787702400000,
+      "rows": 1211,
+      "sha256": "55156f63a6c1b5762ed3683187f2f8dedada4a156fe3c8fddac097f8657def53"
+    },
+    "okx/1d/THETA-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "9e7e987cb5c622f6a73795a55720c834fd9d876d167258a51df071767a31db1c"
+    },
+    "okx/1d/TIA-USDT.csv": {
+      "first_ts": 1698796800000,
+      "last_ts": 1787702400000,
+      "rows": 1030,
+      "sha256": "6f955dfd6410894ee479d46cf5d29c75017e396829fedf259e3c07e225e23d74"
+    },
+    "okx/1d/TRX-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "19db8399147fca7886f344bb73d53c5b80f4b8ad4a02f3847bb1b47624ca1225"
+    },
+    "okx/1d/UNI-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "98a73067a912498047470ac9ebcf58167879813688530b5c4bbf8734524eb91b"
+    },
+    "okx/1d/WIF-USDT.csv": {
+      "first_ts": 1713225600000,
+      "last_ts": 1787702400000,
+      "rows": 863,
+      "sha256": "b816c441a99584c9a015a993ee04ac121827205e96bf95fa56005aa955aef12f"
+    },
+    "okx/1d/WLD-USDT.csv": {
+      "first_ts": 1690243200000,
+      "last_ts": 1787702400000,
+      "rows": 1129,
+      "sha256": "618eae62f4b12ff98964ea80dd053ffc6b6ec61a88ca837fce211918b750c09e"
+    },
+    "okx/1d/XLM-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "c205377e97d2f22bc119c0ccf35c5767e05ac44a7b0ae17a080365c86318e2ad"
+    },
+    "okx/1d/XRP-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "c66d65ce06a9b9970f594d1414f04c580a7efea45991723cb5141a80412f93d8"
+    },
+    "okx/1d/XTZ-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "91e4980b08878a3fd5a82491f16c92fee326105c99c58ab126288853b3076443"
+    },
+    "okx/1d/ZIL-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787702400000,
+      "rows": 2064,
+      "sha256": "95c5a29bffeec37bde9d8ed4180c0563211831cc7aa921a493d3e6236e53aabb"
+    },
+    "okx/4h/AAVE-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "d54f5af2b1963f962da1f57a1737f6d04031336b37e825f58906566ac9bd4520"
+    },
+    "okx/4h/ADA-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "16fdf6f47cb2f217da17530dfa4b7ca117ceeca00ac33881ace4a00c467230fd"
+    },
+    "okx/4h/ALGO-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "f6c7e9993c9dae3098ceb024868f9076d8816cf49f5cb1b9bbde3dbb387bc9c9"
+    },
+    "okx/4h/APE-USDT.csv": {
+      "first_ts": 1647518400000,
+      "last_ts": 1787832000000,
+      "rows": 9745,
+      "sha256": "398d5f55349c47fb5bbbf63fafcff978ce0a418c98e0239e78f1aa7e5d89b87e"
+    },
+    "okx/4h/APT-USDT.csv": {
+      "first_ts": 1666152000000,
+      "last_ts": 1787832000000,
+      "rows": 8451,
+      "sha256": "cd9d5ad08cc6dc12a774197329945a828c52b586e21c6518716280d9ffdcc9f9"
+    },
+    "okx/4h/AR-USDT.csv": {
+      "first_ts": 1640347200000,
+      "last_ts": 1787832000000,
+      "rows": 10243,
+      "sha256": "ff321d4df138177683dab4ddbe242eebb511e295586fedd97bf2499b18aadc47"
+    },
+    "okx/4h/ARB-USDT.csv": {
+      "first_ts": 1679587200000,
+      "last_ts": 1787832000000,
+      "rows": 7518,
+      "sha256": "05777c7475dc853d85850bc8e7fd8cb4c145b5d51c17da62cdd23abea84f686e"
+    },
+    "okx/4h/ATOM-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "535c3fc562b775e41bcbba19c580ee8703c96a7bd3d065db4d32ba276671fbf6"
+    },
+    "okx/4h/AVAX-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "7f141ff43f6e297cef2e7954e8a508461d85d2c4f246ed1c887b601096297505"
+    },
+    "okx/4h/BCH-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "0e578a83a77004f940bcc333c36bb46fcb1e34ab81eab4b9527fa6c8b9f47b42"
+    },
+    "okx/4h/BONK-USDT.csv": {
+      "first_ts": 1704700800000,
+      "last_ts": 1787832000000,
+      "rows": 5774,
+      "sha256": "ba4cab5367679a5d8cafe8c478f30c9235dd13944d0f4fdb5d169f265acb8742"
+    },
+    "okx/4h/BTC-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "f13f3940c2f260afcc0cbe16d16f9cdf6dc65b89f408aeab69f0350bdfb03913"
+    },
+    "okx/4h/CHZ-USDT.csv": {
+      "first_ts": 1614772800000,
+      "last_ts": 1787832000000,
+      "rows": 12019,
+      "sha256": "ed3c6043241d3505e69c98fb3422a09a91da32a4f2d6be76de8520161be15347"
+    },
+    "okx/4h/COMP-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "b921744e27c47feccb1ab6f29b617ae915dbd8baa6231f5998a68f05e8a360b3"
+    },
+    "okx/4h/CRV-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "7c3685d40f5fdef748aed4ee4cb45d54973c57c8e042bd41ed59c0b6780b486e"
+    },
+    "okx/4h/DOGE-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "859985df84652503521a9394e80be66ddf444118c3c7ab62cfacea793d504488"
+    },
+    "okx/4h/DOT-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "474e8d06c6b46655b5840d545a16197a15b36cb11e1585ea1b4a02e760e1c975"
+    },
+    "okx/4h/DYDX-USDT.csv": {
+      "first_ts": 1631116800000,
+      "last_ts": 1787832000000,
+      "rows": 10884,
+      "sha256": "18b4799caf10e690ae9657b08f8cf0a1e73e281c678efdaa7d93d35fd51abc54"
+    },
+    "okx/4h/EGLD-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "8aa62cc497d7385e139b16aa190cd769a8dd61dc24293a50917d616c9f509097"
+    },
+    "okx/4h/ENJ-USDT.csv": {
+      "first_ts": 1696910400000,
+      "last_ts": 1787832000000,
+      "rows": 6315,
+      "sha256": "cd8400769d3f0ad5b1d151d27e984915b346ab196b2b7c444a0e2ebf46f28183"
+    },
+    "okx/4h/ETC-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "699f6a02d228481dbd9559344b6968c8080f9c51484bfefdb8967ce8a5097f5c"
+    },
+    "okx/4h/ETH-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "ab8d4bb9ecb60facbcb68d8df94d55a14c36ff331713957cd5f7b5043814739f"
+    },
+    "okx/4h/FET-USDT.csv": {
+      "first_ts": 1700827200000,
+      "last_ts": 1787832000000,
+      "rows": 6043,
+      "sha256": "2c4145833a9230f6dffa5c153c03abc0dccaf2737b433c72cab1d9271d766339"
+    },
+    "okx/4h/FIL-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "678086b97af780c4991e59be7405356bbe60c58bb9494b2041ff137d91c59714"
+    },
+    "okx/4h/FLOKI-USDT.csv": {
+      "first_ts": 1671192000000,
+      "last_ts": 1787832000000,
+      "rows": 8101,
+      "sha256": "7c6160a3da5c41b95704afac9f24a397c3720fc87e95f2744c30f5d29386e0b7"
+    },
+    "okx/4h/FLOW-USDT.csv": {
+      "first_ts": 1614067200000,
+      "last_ts": 1787832000000,
+      "rows": 12068,
+      "sha256": "d636e358246ad415dc9e3035a44424a3fcab0b82c0dce2805b542bddcb4b53a5"
+    },
+    "okx/4h/GALA-USDT.csv": {
+      "first_ts": 1632312000000,
+      "last_ts": 1787832000000,
+      "rows": 10801,
+      "sha256": "c0f4891c9c56c6093a70269eec0d076b09a8fedf525f1928cdc8206f2fd1cf19"
+    },
+    "okx/4h/GRT-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "344ae85ef6d47c35b104c16e9009899df327ddb998b519c4210e60a962e6c50a"
+    },
+    "okx/4h/HBAR-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "f3531789aeb5d4d6ee486e841d944157485dc207fa7e9b32e6f8ca1b24db5fd7"
+    },
+    "okx/4h/ICP-USDT.csv": {
+      "first_ts": 1620662400000,
+      "last_ts": 1787832000000,
+      "rows": 11610,
+      "sha256": "6e4992420509c8f9815729232eb23dafaeec510e2bfbf4f691f9af86cfe1ac11"
+    },
+    "okx/4h/IMX-USDT.csv": {
+      "first_ts": 1636128000000,
+      "last_ts": 1787832000000,
+      "rows": 10536,
+      "sha256": "fa93ace1a26cb61bdc971280c9ce1a9c512620db819b507252f296fadf5709a2"
+    },
+    "okx/4h/INJ-USDT.csv": {
+      "first_ts": 1701345600000,
+      "last_ts": 1787832000000,
+      "rows": 6007,
+      "sha256": "bd5e1b10583d9345aff07e26435a1381c5de4137aff3cabdac5079d395de3b56"
+    },
+    "okx/4h/IOTA-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "c72f28b66e6197859896dcfc1af40837589f52fbd3294e3f1a093bdc1fcb9d7c"
+    },
+    "okx/4h/JUP-USDT.csv": {
+      "first_ts": 1706716800000,
+      "last_ts": 1787832000000,
+      "rows": 5634,
+      "sha256": "62e979fcbc3a584a92f7630766204b067855dead435d3ae086325db5d08b7f95"
+    },
+    "okx/4h/KSM-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "e057e63e080d1f985e5119ac74c77989dd5b520e044e4198944341fa5be0c329"
+    },
+    "okx/4h/LDO-USDT.csv": {
+      "first_ts": 1662120000000,
+      "last_ts": 1787832000000,
+      "rows": 8731,
+      "sha256": "cfb56d033581c05ffc1506539cae2663a8e8c74edd448d08016a665d0b207ff4"
+    },
+    "okx/4h/LINK-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "ce36358e1d4ed3f0dbc94207a486c51c5778a36f0195e3eeaf5f38028092b072"
+    },
+    "okx/4h/LTC-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "f1156953e3946eaada950de609da38774afc2c10e5935fbdaac4567b9c41c7ad"
+    },
+    "okx/4h/MANA-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "2acba0d16b83b37d034aa382271801cd23fb331d7bba25873a3cd8c5015e5b4e"
+    },
+    "okx/4h/MINA-USDT.csv": {
+      "first_ts": 1622505600000,
+      "last_ts": 1787832000000,
+      "rows": 11482,
+      "sha256": "17e10213e8954981dab3f0bc0a8f93575feaf55c521e85caba4cb17ae77ea2a2"
+    },
+    "okx/4h/NEAR-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "722c7b6462574782b342266f69278f37766d84a48ed95f42fed31ec3cad30d50"
+    },
+    "okx/4h/NEO-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "6d0caf9451673618c5804061829c149232bce1aecc2e2045b41684cd5ca8ec24"
+    },
+    "okx/4h/OKB-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "21f4d75ae5ee141f6bf487c538197f0d54b8e18dbb1448c05c797160c7e3f356"
+    },
+    "okx/4h/OP-USDT.csv": {
+      "first_ts": 1654027200000,
+      "last_ts": 1787832000000,
+      "rows": 9293,
+      "sha256": "6ca8f308b5336e7ee8c4b9aa5fc81b64c5a26b9c332b499700661415bcf712e0"
+    },
+    "okx/4h/ORDI-USDT.csv": {
+      "first_ts": 1684584000000,
+      "last_ts": 1787832000000,
+      "rows": 7171,
+      "sha256": "11b09daf6ff977fa90f05107fcdfc40066013c69a270c23139c56534cb959cf3"
+    },
+    "okx/4h/PEPE-USDT.csv": {
+      "first_ts": 1682942400000,
+      "last_ts": 1787832000000,
+      "rows": 7285,
+      "sha256": "7e346fd11172a0f5104f809807be0f6d5f927a753ba518c7c341d4a0442a8aa1"
+    },
+    "okx/4h/QTUM-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "1bc20c9fd0ada33c6cf391ed1b1db0c56b9dab0cb3dfdf3ae6ec863e7ee9c61c"
+    },
+    "okx/4h/RENDER-USDT.csv": {
+      "first_ts": 1721030400000,
+      "last_ts": 1787832000000,
+      "rows": 4640,
+      "sha256": "38bcdeff342cfab4d2a0ea49c4fb50db418a2f7130eba5df9c583804f52942f8"
+    },
+    "okx/4h/SAND-USDT.csv": {
+      "first_ts": 1616068800000,
+      "last_ts": 1787832000000,
+      "rows": 11929,
+      "sha256": "7c485ffb2d31ec72852786f7d3a9b48533fe2bd97d0a3f1e90853a813a250624"
+    },
+    "okx/4h/SEI-USDT.csv": {
+      "first_ts": 1763107200000,
+      "last_ts": 1787832000000,
+      "rows": 1718,
+      "sha256": "71bd258f26370afe69d1ab924fdacb2fad47c44202b43dc5d68a5fd4e176e306"
+    },
+    "okx/4h/SHIB-USDT.csv": {
+      "first_ts": 1620460800000,
+      "last_ts": 1787832000000,
+      "rows": 11624,
+      "sha256": "13f5501059b07fbe4039d27d34fd012d22341007534539411ff73d37d57ff37a"
+    },
+    "okx/4h/SNX-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "e197eb5c987cc064fa0f64983831bb830c47cad6650986a46a290e8cb734eeca"
+    },
+    "okx/4h/SOL-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "45f6be177dadd142f69303533ea8f9535a0dd20add2a5a456c67fc0cce4d50d7"
+    },
+    "okx/4h/STX-USDT.csv": {
+      "first_ts": 1614859200000,
+      "last_ts": 1787832000000,
+      "rows": 12013,
+      "sha256": "e391de8328d26d8e92b6d626c19fb4822d2e765283ec33500b123ca02e959cb1"
+    },
+    "okx/4h/SUI-USDT.csv": {
+      "first_ts": 1683115200000,
+      "last_ts": 1787832000000,
+      "rows": 7273,
+      "sha256": "46f6db6f2284b87ad129267a7baf20128e223ac51cc24e4ed667523c9f6a5944"
+    },
+    "okx/4h/THETA-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "5275cd97efc3c2829007588e6d5fb24e2925dcd107d7b18d913a349785298b30"
+    },
+    "okx/4h/TIA-USDT.csv": {
+      "first_ts": 1698782400000,
+      "last_ts": 1787832000000,
+      "rows": 6185,
+      "sha256": "4fd441daf1a82cd8339b4664ea5c5615e5fcdbcdebdcd9ba4020d970d08ea30a"
+    },
+    "okx/4h/TRX-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "cf9db4fde4a15972f2224f671883bfb628eb09046daaa8213f2b422aeaf86352"
+    },
+    "okx/4h/UNI-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "50e18ae735e4bc0e254cc1f388b93d9bf487c9f6984672a850c64db4585560a1"
+    },
+    "okx/4h/WIF-USDT.csv": {
+      "first_ts": 1713182400000,
+      "last_ts": 1787832000000,
+      "rows": 5185,
+      "sha256": "8455ed7214bfdb724a4dba6804dbe20cd56de560c2195e8af7f45fcd1ba3ca95"
+    },
+    "okx/4h/WLD-USDT.csv": {
+      "first_ts": 1690200000000,
+      "last_ts": 1787832000000,
+      "rows": 6781,
+      "sha256": "5e1db6966e48449814b4ccb7409ebce6f9f8c4fbd9d0475f3805b25c5389267c"
+    },
+    "okx/4h/XLM-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "51ee2fa4b60b5231563a8f79923b1d197a0f4c79934fffe24abd531438cfced2"
+    },
+    "okx/4h/XRP-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "65766712666ba93c419bdf9e04f6a4044cc24c1776697d151d0fe754774d54d9"
+    },
+    "okx/4h/XTZ-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "2aaa26d8a25442f9e214661ea3450d5b0ca3a7ee26a0aaba7dbf9b4810fb1ee5"
+    },
+    "okx/4h/ZIL-USDT.csv": {
+      "first_ts": 1609459200000,
+      "last_ts": 1787832000000,
+      "rows": 12388,
+      "sha256": "b1bba27a88e799ed9d2338bca20c9830a0d5fa404b20a6373644c330874de55a"
+    }
+  },
+  "generated_at": "2026-08-27T18:36:01+00:00",
+  "root": "data\\derived"
+}
