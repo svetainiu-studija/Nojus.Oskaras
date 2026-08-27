@@ -45,11 +45,11 @@ def dataset_id(manifest: dict) -> str:
     return hashlib.sha256(canon).hexdigest()[:12]
 
 
-def main() -> None:
+def main(argv=None) -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("root", help="data root to hash, e.g. data/raw")
     ap.add_argument("--config", default=None, help="config file to embed for provenance")
-    args = ap.parse_args()
+    args = ap.parse_args(argv)
 
     root = Path(args.root)
     manifest = build_manifest(root)

@@ -44,11 +44,11 @@ def analyse(path: Path, tf_ms: int) -> dict:
     }
 
 
-def main() -> None:
+def main(argv=None) -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("root")
     ap.add_argument("--max-missing-pct", type=float, default=2.0)
-    args = ap.parse_args()
+    args = ap.parse_args(argv)
 
     root = Path(args.root)
     failures = 0

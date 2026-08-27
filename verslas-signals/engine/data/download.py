@@ -76,12 +76,12 @@ def fetch_pair(exchange, symbol: str, timeframe: str, since_ms: int, out_path: P
     return written
 
 
-def main() -> None:
+def main(argv=None) -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--config", default="pairs.yaml")
     ap.add_argument("--out", default="data/raw")
     ap.add_argument("--force", action="store_true", help="refetch files from scratch")
-    args = ap.parse_args()
+    args = ap.parse_args(argv)
 
     import ccxt  # imported here so `make test` needs no network deps
 

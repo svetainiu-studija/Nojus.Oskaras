@@ -4,12 +4,34 @@ Scaffolding for tasks 0.9–0.10 (data pipeline, dataset versioning, cost model)
 
 ## Quickstart (run locally — exchange APIs are not reachable from the Claude cloud workspace)
 
+Requires Python 3.10+ and Git.
+
+**Windows (PowerShell)** — run the lines one at a time (older PowerShell doesn't accept `&&`):
+
+```powershell
+cd $HOME\Documents
+git clone https://github.com/svetainiu-studija/Nojus.Oskaras.git   # first time only; later just: git pull
+cd Nojus.Oskaras\verslas-signals
+pip install -r requirements.txt
+python run.py
+```
+
+**Mac/Linux:**
+
 ```bash
 cd verslas-signals
 make deps     # install python dependencies (ccxt, pyyaml)
-make data     # download ~4.5 years of spot OHLCV for the pairs in pairs.yaml, then write a versioned dataset manifest
-make check    # data-quality report (gaps per file); non-zero exit if any file misses >2% of bars
+make data     # download OHLCV + write a versioned dataset manifest (same as: python3 run.py)
+make check    # data-quality report
 make test     # unit tests (no network needed)
+```
+
+The first download takes a while (thousands of paginated requests, rate-limited). It is safe to interrupt and rerun — it resumes. When it finishes, commit the manifest:
+
+```powershell
+git add data
+git commit -m "Add first dataset manifest"
+git push
 ```
 
 `make data` is idempotent — rerunning refreshes files and produces a new manifest. Every backtest must record the `DATASET-<id>` it ran on (protocol step 2).
