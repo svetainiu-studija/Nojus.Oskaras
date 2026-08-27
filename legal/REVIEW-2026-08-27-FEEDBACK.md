@@ -1,6 +1,6 @@
 # Review feedback on the legal analysis — received 2026-08-27
 
-**Provenance:** supplied by Oskaras on 2026-08-27 as review feedback on `ANALYSIS-2026-08-AI-SECOND-OPINION.md`. Authorship not yet stated — **if this is the cousin's (a lawyer's) written reply, record their name and the date here**; that is what makes it citable as a lawyer's written view. Until then it is treated as founder-relayed feedback.
+**Provenance:** supplied by Oskaras on 2026-08-27 as review feedback on `ANALYSIS-2026-08-AI-SECOND-OPINION.md`. Founders confirmed on 2026-08-27 that this text was **written by ChatGPT**; at the founders' request the text is kept as received. It is therefore a further AI research input, not a lawyer's view. **No human lawyer has reviewed the business model yet** — task 3 (the cousin's written answers to the 7 questions) remains fully open, and per D-017 no AI analysis can ever substitute for the written legal opinions gated at G2 and G3.
 
 **Disposition of the eight points:**
 
