@@ -20,5 +20,8 @@ derive:
 universe:
 	python3 -m engine.universe data/derived/okx/1d --out data/universe.csv
 
+exp001:
+	python3 -m engine.experiment
+
 test:
 	python3 -m unittest discover -s tests -v
