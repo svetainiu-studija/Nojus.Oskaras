@@ -82,6 +82,15 @@ recon).
   audit-report template for O1 productized from the existing engine;
   the go/no-go evaluated mechanically on 2026-09-11 from the log below.
 
+## Ready-made assets (Claude, 2026-08-28)
+
+- `business/OUTREACH-KIT.md` — every post/DM/follow-up, EN + LT,
+  including the commitment-ask script (criterion 3) and the
+  landing-page copy block.
+- `business/products/STRATEGY-AUDIT-SERVICE.md` — O1 fully specified:
+  deliverable template, intake questionnaire, pricing, proof assets,
+  operations checklist. Sellable on first commitment.
+
 ## OUTCOME LOG (append-only; one line per conversation/attempt)
 
 | date | who | where | unprompted pain? | commitment? | note |
