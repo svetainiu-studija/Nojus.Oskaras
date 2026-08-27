@@ -91,6 +91,25 @@ def rolling_min(xs, n):
     return out
 
 
+def atr(highs, lows, closes, n=14):
+    """Wilder's Average True Range. Defined from index n onward."""
+    m = len(closes)
+    out = [None] * m
+    if m <= n:
+        return out
+    trs = []
+    for i in range(1, m):
+        trs.append(max(highs[i] - lows[i],
+                       abs(highs[i] - closes[i - 1]),
+                       abs(lows[i] - closes[i - 1])))
+    cur = sum(trs[:n]) / n
+    out[n] = cur
+    for i in range(n + 1, m):
+        cur = (cur * (n - 1) + trs[i - 1]) / n
+        out[i] = cur
+    return out
+
+
 def pct_return(xs, n):
     """n-bar percentage return: xs[i] / xs[i-n] - 1."""
     out = [None] * len(xs)

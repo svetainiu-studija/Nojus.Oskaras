@@ -29,5 +29,8 @@ exp003:
 exp004:
 	python3 -m engine.exp004
 
+sprintd:
+	python3 -m engine.sprint_d
+
 test:
 	python3 -m unittest discover -s tests -v
