@@ -148,8 +148,8 @@ class Hyp001PlumbingTest(unittest.TestCase):
         data = {"A": make_pair(bars)}
         strat = Hyp001(data, full_universe(data))
         # neutralise the rule internals; drive arming/trigger by hand
-        strat._trend_ok = lambda pair, d, i: i == 3
-        strat._pullback_ok = lambda pair, d, i: i == 3
+        strat._trend_ok = lambda pair, d, i, year="": i == 3
+        strat._pullback_ok = lambda pair, d, i, year="": i == 3
         strat.ind["A"]["ema50"] = [0.0] * 12
         return data, strat
 

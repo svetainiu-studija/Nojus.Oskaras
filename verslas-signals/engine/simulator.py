@@ -68,7 +68,8 @@ class Simulator:
     """
 
     def __init__(self, data, universe, btc_ctx, cost_fn, strategy, policy,
-                 start_equity=10_000.0, research_range=None):
+                 start_equity=10_000.0, research_range=None, btc_entry_gate=True):
+        self.btc_entry_gate = btc_entry_gate
         self.data = data
         self.universe = universe
         self.btc = btc_ctx
@@ -145,7 +146,7 @@ class Simulator:
         return i
 
     # ----- fills ---------------------------------------------------------
-    def _fill_exit(self, pair, px, ts, units=None):
+    def _fill_exit(self, pair, px, ts, units=None, reason=None):
         pos = self.positions[pair]
         qty = pos.units if units is None else units
         cost = self.cost_fn(pair)
@@ -159,6 +160,8 @@ class Simulator:
                 "r": r, "bars_held": pos.bars_held, "regime": pos.regime,
                 "fold": fold_of(pos.entry_ts),
                 "pct": pos.cash_flow / (pos.units0 * pos.entry_px),
+                "exit_reason": reason or "unknown",
+                "took_partial": pos.half_taken,
             })
             del self.positions[pair]
 
@@ -185,7 +188,7 @@ class Simulator:
                 still_pending.append((pair, reason))  # postpone (D-019)
                 continue
             i, d = self.bar(pair, ts)
-            self._fill_exit(pair, d["open"][i], ts)
+            self._fill_exit(pair, d["open"][i], ts, reason=reason)
         self.pending_exits = still_pending
 
         still_entries = []
@@ -227,7 +230,8 @@ class Simulator:
             target = pos.entry_px + self.policy.partial_r * (pos.entry_px - pos.stop0)
             if d["high"][i] >= target:
                 qty = pos.units0 * self.policy.partial_frac
-                self._fill_exit(pair, target, ts, units=min(qty, pos.units))
+                self._fill_exit(pair, target, ts, units=min(qty, pos.units),
+                                reason="partial")
                 if pair in self.positions:
                     self.positions[pair].half_taken = True
 
@@ -259,8 +263,8 @@ class Simulator:
             elif self.policy.regime_exit and btc_bearish:
                 self.pending_exits.append((pair, "regime"))
 
-        # new entries (never while BTC filter is off)
-        if btc_bearish:
+        # new entries (blocked while BTC is below its SMA50, unless ablated)
+        if btc_bearish and self.btc_entry_gate:
             return
         exiting = {p for p, _ in self.pending_exits}
         for pair in self.data:

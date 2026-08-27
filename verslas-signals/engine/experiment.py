@@ -73,23 +73,27 @@ def btc_context(data):
 
 def dataset_ids(data_dir: Path):
     ids = {}
-    for m in sorted(data_dir.glob("DATASET-*.json")):
-        try:
-            j = json.loads(m.read_text())
-            ids[j.get("root", m.stem)] = j.get("dataset_id", m.stem)
-        except Exception:
-            pass
+    for parent in list(data_dir.parents)[:3]:
+        for m in sorted(parent.glob("DATASET-*.json")):
+            try:
+                j = json.loads(m.read_text())
+                ids[j.get("root", m.stem)] = j.get("dataset_id", m.stem)
+            except Exception:
+                pass
     return ids
 
 
-def run_sim(data, universe, btc, cost_model, stress, start_equity=10_000.0):
+def run_sim(data, universe, btc, cost_model, stress, start_equity=10_000.0,
+            ablation=False):
     def cost_fn(pair):
         return cost_model.one_way_fraction("okx", pair.replace("-", "/")) * \
             (cost_model.stress_multiplier if stress else 1.0)
-    strategy = Hyp001(data, universe)
-    sim = Simulator(data, universe, btc, cost_fn, strategy, ExitPolicy(),
+    strategy = Hyp001(data, universe, trend_filter=not ablation)
+    policy = ExitPolicy(regime_exit=not ablation)
+    sim = Simulator(data, universe, btc, cost_fn, strategy, policy,
                     start_equity=start_equity,
-                    research_range=(RESEARCH_START_MS, HOLDOUT_START_MS))
+                    research_range=(RESEARCH_START_MS, HOLDOUT_START_MS),
+                    btc_entry_gate=not ablation)
     return sim.run()
 
 
@@ -213,6 +217,33 @@ def write_report(out_path: Path, ctx):
         ]
     lines += [
         "",
+        "## Exit reasons (final leg of each trade)",
+        "",
+        "| reason | trades | mean R |",
+        "|---|---|---|",
+    ]
+    for reason, (n, mean_r) in sorted(ctx["exit_reasons"].items()):
+        lines.append(f"| {reason} | {n} | {mean_r:+.3f} |")
+    lines += [
+        "",
+        "## Trades per year (entry date)",
+        "",
+        "| year | trades |",
+        "|---|---|",
+    ]
+    for y, n in sorted(ctx["per_year"].items()):
+        lines.append(f"| {y} | {n} |")
+    lines += [
+        "",
+        "## Signal funnel (why bars did not become trades; counts per year:stage)",
+        "",
+        "```",
+    ]
+    for key, n in sorted(ctx["funnel"].items()):
+        lines.append(f"{key:>28}: {n}")
+    lines += [
+        "```",
+        "",
         "## Skip counters (cap behaviour)",
         "",
         f"`{ctx['skips']}`",
@@ -245,8 +276,14 @@ def main(argv=None):
     ap.add_argument("--costs", default="costs.yaml")
     ap.add_argument("--start-equity", type=float, default=10_000.0)
     ap.add_argument("--unlock-holdout", default=None)
-    ap.add_argument("--out", default="../research/experiments/EXP-001.md")
+    ap.add_argument("--ablation", action="store_true",
+                    help="EXP-001b: disable BTC gate, regime exit and trend "
+                         "filter (edge-vs-beta falsifier)")
+    ap.add_argument("--out", default=None)
     args = ap.parse_args(argv)
+    if args.out is None:
+        args.out = ("../research/experiments/EXP-001b.md" if args.ablation
+                    else "../research/experiments/EXP-001.md")
 
     if args.unlock_holdout is None:
         max_ts = HOLDOUT_START_MS
@@ -264,13 +301,16 @@ def main(argv=None):
     btc = btc_context(data)
     cost_model = CostModel.from_yaml(args.costs)
 
+    if args.ablation:
+        print("ABLATION RUN (EXP-001b): BTC gate, regime exit and trend "
+              "filter DISABLED — this tests whether the filters add anything")
     print("running main simulation ...")
     sim = run_sim(data, universe, btc, cost_model, stress=False,
-                  start_equity=args.start_equity)
+                  start_equity=args.start_equity, ablation=args.ablation)
     print(f"  {len(sim.trades)} trades, skips {sim.skips}")
     print("running 2x cost-stress simulation ...")
     sim_s = run_sim(data, universe, btc, cost_model, stress=True,
-                    start_equity=args.start_equity)
+                    start_equity=args.start_equity, ablation=args.ablation)
 
     metrics = summarize(sim.trades, sim.equity_curve)
     metrics_s = summarize(sim_s.trades, sim_s.equity_curve)
@@ -280,22 +320,47 @@ def main(argv=None):
     print("running random-entry baseline ...")
     rb = random_baseline(data, universe, cost_model, sim.trades)
 
+    exit_reasons = {}
+    for t in sim.trades:
+        n, s = exit_reasons.get(t["exit_reason"], (0, 0.0))
+        exit_reasons[t["exit_reason"]] = (n + 1, s + t["r"])
+    exit_reasons = {k: (n, s / n) for k, (n, s) in exit_reasons.items()}
+    per_year = {}
+    for t in sim.trades:
+        y = day(t["entry_ts"])[:4]
+        per_year[y] = per_year.get(y, 0) + 1
+    # keep only the loudest funnel counters to keep the report readable
+    funnel = dict(sorted(sim.strategy.funnel.items(),
+                         key=lambda kv: -kv[1])[:40])
+
     ctx = {
         "run_date": day(int(datetime.now(timezone.utc).timestamp() * 1000)),
         "window": f"{day(RESEARCH_START_MS)} .. {day(HOLDOUT_START_MS)} (excl.)",
-        "datasets": dataset_ids(Path(args.data).parents[1]),
-        "config_hash": config_hash(),
+        "datasets": dataset_ids(Path(args.data)),
+        "config_hash": config_hash() + ("-ablation" if args.ablation else ""),
         "start_equity": args.start_equity,
         "final_equity": sim.equity_curve[-1] if sim.equity_curve else 0.0,
         "total_return": (sim.equity_curve[-1] / args.start_equity - 1.0
                          if sim.equity_curve else 0.0),
         "metrics": metrics, "metrics_stress": metrics_s,
         "bh": bh, "rb": rb, "strat_mean_pct": strat_mean_pct,
-        "skips": sim.skips,
+        "skips": sim.skips, "exit_reasons": exit_reasons,
+        "per_year": per_year, "funnel": funnel,
     }
     out = Path(args.out)
     write_report(out, ctx)
-    print(f"\nreport -> {out}")
+    # per-trade list for eyeballing, next to the report
+    trades_csv = out.with_suffix(".trades.csv")
+    with trades_csv.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["pair", "entry", "exit", "r", "pct", "bars_held",
+                    "regime", "fold", "exit_reason", "took_partial"])
+        for t in sorted(sim.trades, key=lambda t: t["entry_ts"]):
+            w.writerow([t["pair"], day(t["entry_ts"]), day(t["exit_ts"]),
+                        f"{t['r']:.3f}", f"{t['pct']:.4f}", t["bars_held"],
+                        t["regime"], t["fold"], t["exit_reason"],
+                        int(t["took_partial"])])
+    print(f"\nreport -> {out}\ntrades -> {trades_csv}")
     print(f"trades {metrics['trades']} | expectancy {metrics['expectancy_r']:+.3f} R "
           f"| PF {metrics['profit_factor']:.2f} | maxDD {metrics['max_drawdown']:.1%}")
 
