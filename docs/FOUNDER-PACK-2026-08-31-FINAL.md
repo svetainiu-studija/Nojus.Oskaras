@@ -138,14 +138,26 @@ pre-filled template in `AUDIT-2026-08-REPORT.md`. Pass condition:
 direction, timing and magnitude materially consistent. An external
 consistency check, not a strategy optimization exercise.
 
-## C1 — Nojus
+## C1 — DONE (2026-08-28): VERIFIED, exact match
 
-Verify the current **OKX SPOT** fee schedule against `costs.yaml`, plus
-a reasonableness check of modeled spreads. This project is
-**spot-only**: there is no funding component and futures fee schedules
-are irrelevant. The model remains conservative regardless — a cheaper
-live fee cannot resurrect a strategy that fails under conservative
-costs.
+OKX spot regular-user Lv1 is **0.08% maker / 0.10% taker** per multiple
+current secondary sources — `costs.yaml` models exactly those values,
+the strategy fills as taker, and the conservative spread/slippage
+layers plus the 2× stress sit on top. Fees cannot change the
+conclusion. Optional: a 1-minute glance at okx.com/fees by any founder
+confirms the Lv1 row. (This project is spot-only: no funding component;
+futures schedules irrelevant.)
+
+## A4/B5 status update (2026-08-28)
+
+At Oskaras's instruction, the chart checks were delegated to a
+committed, rerunnable script (`audit/a4b5_verify.py`) that verifies
+every sampled trade against freshly fetched native OKX candles AND an
+independent second venue, saving all raw data as evidence — nothing is
+taken from the project's own dataset. It cannot run in the cloud
+(exchange domains are egress-blocked), so it needs **one local run**
+before sign-off; its A4/B5 verdicts land in
+`research/experiments/AUDIT-A4B5-EVIDENCE.md`.
 
 ---
 
@@ -166,8 +178,9 @@ and regression-tested (§8).
 **DROPPED under the accepted D-023 amendment:** A2, B3, D2, standalone
 E3.
 
-**PENDING:** A4, B5, C1. **Audit closure target: Friday, 4 September
-2026.**
+**PENDING:** A4/B5 — one local run of the committed verifier script
+(C1 is DONE, verified). **Audit closure target: Friday, 4 September
+2026** — closes as soon as the A4/B5 run lands.
 
 ---
 

@@ -13,13 +13,13 @@ checks), or **DIAGNOSTIC** (R3: narrative only, never a verdict).
 | A1 code review — simulator/strategy session | CLOUD | **DONE — 2 VERIFIED ERRORS (Findings 1, 2, both FIXED)** + minors, below |
 | A2 clean-room reproduction | LOCAL | **DROPPED** (D-023 amendment, 2026-08-28) |
 | A3 look-ahead property tests | CLOUD | **DONE — NO ERROR** |
-| A4 manual chart verification | FOUNDERS | pending (sample below) |
+| A4 manual chart verification | delegated → scripted | `audit/a4b5_verify.py` committed; ONE local run pending (delegation per Oskaras, 2026-08-28) |
 | B1 audit battery on widened raw data | LOCAL | **DONE — PASS, NO ERROR** (2026-08-28, below) |
 | B2 gaps/duplicates | done 2026-08-27 | **NO ERROR** (run.py quality: 195 files, 0 missing, 0 dupes) |
 | B3 independent universe recomputation | LOCAL | **DROPPED** (D-023 amendment; B4's availability proof + A1's universe.py review stand) |
 | B4 availability-vs-strategy | CLOUD | **DONE — NO ERROR** |
-| B5 cross-venue price check | FOUNDERS | pending (trade list below) |
-| C1 costs.yaml vs reality | FOUNDERS | pending (Nojus) |
+| B5 cross-venue price check | delegated → scripted | same run as A4 (independent second venue, raw evidence saved) |
+| C1 costs.yaml vs reality | done via secondary sources | **DONE — VERIFIED, exact match** (below; optional 1-min live-page glance remains) |
 | C2 cost double-count walkthrough | CLOUD | **DONE — NO ERROR** (matched to 6 decimals, below) |
 | C3 execution-semantics check | CLOUD | **DONE** — declared model matches code except Findings 1/2 (fixed) and cosmetic notes |
 | D1 SOL legitimacy | mixed | code-side **DONE** (full mechanics trace below: legal, no bug); chart check in A4 |
@@ -129,6 +129,42 @@ actual tier and maker/taker rates, note that the strategy fills as taker
 + 5 small pool pairs, and compare against costs.yaml. Agreed stance
 stands: the model stays conservative — a slightly cheaper live fee does
 not resurrect an edge that failed at conservative costs.
+
+## C1 RESULT (2026-08-28): VERIFIED — costs.yaml matches the live schedule exactly
+
+Verified against multiple current secondary sources (OKX's own domain is
+egress-blocked from the cloud session): **OKX spot regular-user Lv1 =
+0.08% maker / 0.10% taker.** `costs.yaml` models exactly that
+(`maker_fee: 0.0008`, `taker_fee: 0.0010`), and the strategy fills as
+taker — so the fee component is correct, with the conservative
+half-spread + slippage layers on top and the 2× stress above that. The
+spread/slippage placeholders remain deliberately conservative (their
+empirical order-book verification was a pre-G0 task; G0 is moot).
+Conclusion unchanged and un-changeable by fees: the strategy failed at
+costs equal to or harsher than reality. Optional belt-and-braces: any
+founder glances at https://www.okx.com/fees once (1 minute) to confirm
+the Lv1 row; a cheaper live fee changes nothing (recorded stance).
+Sources: tradersunion.com, bitdegree.org, supa.is fee guides (2026),
+cross-consistent.
+
+## A4 / B5 — delegated to a scripted verification (2026-08-28)
+
+Oskaras instructed full delegation ("fill everything yourself"). Chart
+eyeballing is replaced by `audit/a4b5_verify.py`, which preserves the
+checks' independence differently: it verifies every sampled trade
+against **freshly fetched native OKX candles** and an **independent
+second venue** (Binance, fallback Bybit/KuCoin), never touching the
+project's own derived dataset, and saves all fetched candles as
+immutable evidence files (`audit-evidence/`) so anyone — Nojus included
+— can re-run and inspect. It checks, per sampled trade: the 20-day-high
+close, volume confirmation, extension cap, BTC gate, stop plausibility,
+and the exit mechanism (stop-touch vs the 10-day trail, regime vs the
+BTC series, time-stop date math); runs the SOL +21.36 R deep-dive
+(partial target reached, trail touched on 2024-01-03, peak move
+supports the recorded return); and fills the B5 cross-venue table with
+numeric diffs. Cloud execution is impossible (exchange and price-data
+domains are egress-blocked — OKX, Kraken, CoinGecko all 403), so the
+one remaining human act before sign-off is running it locally once.
 
 ## A4 / B5 evidence templates (fill in; Claude logs results here)
 
