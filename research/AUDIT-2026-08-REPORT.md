@@ -14,7 +14,7 @@ checks), or **DIAGNOSTIC** (R3: narrative only, never a verdict).
 | A2 clean-room reproduction | LOCAL | pending (script ships after A1) |
 | A3 look-ahead property tests | CLOUD | **DONE — NO ERROR** |
 | A4 manual chart verification | FOUNDERS | pending (sample below) |
-| B1 audit battery on widened raw data | LOCAL | pending: `python -m engine.data.audit data/raw` |
+| B1 audit battery on widened raw data | LOCAL | **DONE — PASS, NO ERROR** (2026-08-28, below) |
 | B2 gaps/duplicates | done 2026-08-27 | **NO ERROR** (run.py quality: 195 files, 0 missing, 0 dupes) |
 | B3 independent universe recomputation | LOCAL | pending (script ships) |
 | B4 availability-vs-strategy | CLOUD | **DONE — NO ERROR** |
@@ -27,7 +27,7 @@ checks), or **DIAGNOSTIC** (R3: narrative only, never a verdict).
 | D3 era analysis | CLOUD | **DONE — DIAGNOSTIC** (major, below) |
 | E1 independent stats recomputation | CLOUD | **DONE — NO ERROR** (one episode, below) |
 | E2 independent bootstrap | CLOUD | **DONE — NO ERROR** |
-| E3 baseline reproduction | CLOUD+LOCAL | methodology review **DONE — VERIFIED ERROR F1**; compliant rerun = the R1 fix, pending |
+| E3 baseline reproduction | CLOUD+LOCAL | **DONE** — F1 fixed; compliant same-exit p = **0.1069**, still FAIL (R1 rerun below) |
 | E4 multiple-testing accounting | CLOUD | **DONE** (can only strengthen the failure) |
 | E5 concentration robustness | CLOUD | **DONE — DIAGNOSTIC** |
 
@@ -281,6 +281,46 @@ sum over one initial-risk denominator (cross-checked: trailed stop ≈
 $97–100 vs $24.6 entry matches SOL's actual late-Dec 10-day lows).
 Findings 1 and 7 do not touch this trade. What remains for the founders is
 A4: confirm those bars against the public chart.
+
+## R1 rerun RESULT (Oskaras ran, 2026-08-28): STILL FAILED — conclusion stands
+
+`research/experiments/EXP-007-AUDIT-R1.md` (commit `a2f4977`). Under the
+fixed engine and the compliant baseline, with all seven thresholds
+unchanged:
+
+- **Trade set identical** to the committed EXP-007 (48 shared, 0 added, 0
+  removed) — the three verified errors never changed which trades exist.
+  Expectancy +0.316 R (was +0.317; one fold moved −0.310→−0.321 — the
+  entire Finding-1 effect).
+- **Finding 2 guards never triggered** (`cash: 0, size_bound: 0`),
+  confirming the reviewer's non-binding prediction.
+- **Same-exit p = 0.1069** ((r+1)/(N+1), 2,000 sims, seed 20260901).
+  Honest correction of the record: the pre-rerun expectation ("p most
+  plausibly worsens") was NOT borne out — the compliant null's mean is
+  higher (+0.52% vs +0.12%) but its variance is tighter, so p *improved*
+  from 0.1645. It still fails the unchanged 0.05 threshold by 2×. This is
+  why the protocol reruns instead of arguing directions.
+- Same four checks fail: folds 3/7, p, top-pair share 148.8%, ex-top
+  −0.161 R. **Verdict: STILL FAILED; per R6 the EXP-007 conclusion
+  stands.**
+
+## B1 result (Oskaras ran, 2026-08-28): PASS — NO ERROR
+
+`python -m engine.data.audit data/raw` on the full 65-pair raw dataset:
+alignment clean (modal offset 0 ms, all timeframes, all files);
+aggregation consistency within budget (material price mismatches 0.047%
+of 4h bars, 0.125% of 1d bars — concentrated on the known 2022-12-18
+outage and crash days like CRV 2022-06-13/FLOW 2022-02-28); zero-volume
+runs are exactly the documented 2022-12-18 exchange-wide outage (~9×1h /
+5×4h bars per pair; absent from post-2022 listings, as expected); spike
+list is real market events; volume field confirmed base units (BTC ≈
+$480M median daily quote). Notes on record: SOL-USDT shows 39 material
+native-vs-derived daily diffs concentrated in early-2021 low-price
+history (0.5–0.6%, the AVAX/CRV tick-rounding pattern from audit v3) —
+research trades DERIVED bars (D-019) and the SOL mega-trade sits in
+Oct-2023→Jan-2024, nowhere near them; two spike rows (ORDI 2026-04-16,
+OKB 2025-08-13) fall in the holdout era — raw-data QA only, no research
+run touches those dates. **audit: PASS.**
 
 ## R1 mechanical rerun (built; runs LOCAL)
 
