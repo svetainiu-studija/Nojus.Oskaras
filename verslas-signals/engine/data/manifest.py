@@ -36,7 +36,9 @@ def file_entry(path: Path) -> dict:
 def build_manifest(root: Path) -> dict:
     files = {}
     for path in sorted(root.rglob("*.csv")):
-        files[str(path.relative_to(root))] = file_entry(path)
+        # as_posix() keeps manifest keys (and thus dataset ids) identical
+        # across Windows and Unix machines
+        files[path.relative_to(root).as_posix()] = file_entry(path)
     return {"files": files}
 
 
