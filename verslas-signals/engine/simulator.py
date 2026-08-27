@@ -7,8 +7,13 @@ Execution semantics (matching the hypotheses and CHARTER §5):
   (spot: no intrabar guarantees).
 - The 2R partial is a resting limit sell: filled intrabar when the bar's
   high touches the target, at the target price.
-- Zero-volume bars are non-tradable (D-019): fills scheduled onto one are
-  postponed to the next tradable open; nothing is ever filled on them.
+- Zero-volume bars are non-tradable (D-019): exits scheduled onto one are
+  postponed to the next tradable open; entries scheduled onto one are
+  cancelled (the setup's price basis is stale); nothing is ever filled on
+  them.
+- Spot account: an entry whose notional exceeds available cash is skipped
+  (no leverage, D-015), as is one larger than the cost model's small-order
+  bound (0.1% of the fill bar's volume, costs.yaml).
 - D-015 caps: risk 1% of current equity per trade, max 6 concurrent
   positions, 6% portfolio heat (sum of open initial-risk fractions), and at
   most 2 held positions whose 30-day return correlation with the candidate
@@ -67,7 +72,9 @@ class Position:
         self.regime = regime
         self.bars_held = 0
         self.half_taken = False
-        self.max_r = 0.0                  # best unrealised R seen at a close
+        self.max_r = 0.0                  # best unrealised R seen intrabar
+                                          # ("reached +XR" counts the bar's
+                                          # high — AUDIT-2026-08 Finding 1)
         self.cash_flow = 0.0              # net cash from fills (incl. entry)
 
 
@@ -81,8 +88,11 @@ class Simulator:
 
     def __init__(self, data, universe, btc_ctx, cost_fn, strategy, policy,
                  start_equity=10_000.0, research_range=None, btc_entry_gate=True,
-                 max_positions=MAX_POSITIONS):
+                 max_positions=MAX_POSITIONS, size_bound_frac=None):
         self.btc_entry_gate = btc_entry_gate
+        # costs.yaml small-order bound (0.1% of fill-bar volume); None = off
+        # (synthetic test fixtures); real runners pass 0.001
+        self.size_bound_frac = size_bound_frac
         self.max_positions = min(max_positions, MAX_POSITIONS)
         self.data = data
         self.universe = universe
@@ -95,7 +105,7 @@ class Simulator:
         self.trades = []
         self.equity_curve = []
         self.skips = {"slots": 0, "heat": 0, "corr": 0, "zero_volume": 0,
-                      "stop_wide": 0}
+                      "stop_wide": 0, "cash": 0, "size_bound": 0}
         self.pending_entries = []   # (intent, sized at schedule time close)
         self.pending_exits = []     # (pair, reason)
         self.ts_index = {p: {ts: i for i, ts in enumerate(d["ts"])}
@@ -225,10 +235,18 @@ class Simulator:
             if px <= intent.stop_px:
                 continue  # gapped through the stop before entry: no trade
             cost = self.cost_fn(pair)
-            self.cash -= units * px * (1.0 + cost)
+            notional = units * px * (1.0 + cost)
+            if notional > self.cash + 1e-9:
+                self.skips["cash"] += 1      # spot: no leverage (D-015)
+                continue
+            if self.size_bound_frac is not None \
+                    and units > self.size_bound_frac * d["volume"][i]:
+                self.skips["size_bound"] += 1  # costs.yaml small-order bound
+                continue
+            self.cash -= notional
             pos = Position(pair, units, px, intent.stop_px, risk_amount,
                            risk_frac, ts, regime)
-            pos.cash_flow = -units * px * (1.0 + cost)
+            pos.cash_flow = -notional
             target_2r = px + self.policy.partial_r * (px - intent.stop_px)
             if intent.partial_px is not None and intent.partial_px > px:
                 pos.partial_px = min(target_2r, intent.partial_px)
@@ -283,7 +301,9 @@ class Simulator:
             close = d["close"][i]
             risk_px = pos.entry_px - pos.stop0
             if risk_px > 0:
-                pos.max_r = max(pos.max_r, (close - pos.entry_px) / risk_px)
+                # intrabar basis: the resting partial fills off the same high,
+                # so "reached +XR" must too (AUDIT-2026-08 Finding 1)
+                pos.max_r = max(pos.max_r, (d["high"][i] - pos.entry_px) / risk_px)
             trail_on = (pos.half_taken if self.policy.trail_mode == "after_partial"
                         else pos.max_r >= self.policy.trail_after_r)
             if trail_on and i >= self.policy.trail_lookback:

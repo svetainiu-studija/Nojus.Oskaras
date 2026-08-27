@@ -10,7 +10,7 @@ checks), or **DIAGNOSTIC** (R3: narrative only, never a verdict).
 | Test | Runs | Status |
 |---|---|---|
 | A1 code review — statistics/costs/baselines session | CLOUD | **DONE — 1 VERIFIED ERROR (F1)** + minors, below |
-| A1 code review — simulator/strategy session | CLOUD | in progress |
+| A1 code review — simulator/strategy session | CLOUD | **DONE — 2 VERIFIED ERRORS (Findings 1, 2, both FIXED)** + minors, below |
 | A2 clean-room reproduction | LOCAL | pending (script ships after A1) |
 | A3 look-ahead property tests | CLOUD | **DONE — NO ERROR** |
 | A4 manual chart verification | FOUNDERS | pending (sample below) |
@@ -21,8 +21,8 @@ checks), or **DIAGNOSTIC** (R3: narrative only, never a verdict).
 | B5 cross-venue price check | FOUNDERS | pending (trade list below) |
 | C1 costs.yaml vs reality | FOUNDERS | pending (Nojus) |
 | C2 cost double-count walkthrough | CLOUD | **DONE — NO ERROR** (matched to 6 decimals, below) |
-| C3 execution-semantics check | CLOUD | in progress (simulator session; partial notes below) |
-| D1 SOL legitimacy | mixed | partially done (see D3; chart check in A4) |
+| C3 execution-semantics check | CLOUD | **DONE** — declared model matches code except Findings 1/2 (fixed) and cosmetic notes |
+| D1 SOL legitimacy | mixed | code-side **DONE** (full mechanics trace below: legal, no bug); chart check in A4 |
 | D2 restricted-universe recomputation | LOCAL | pending |
 | D3 era analysis | CLOUD | **DONE — DIAGNOSTIC** (major, below) |
 | E1 independent stats recomputation | CLOUD | **DONE — NO ERROR** (one episode, below) |
@@ -215,6 +215,102 @@ target, not the better open (F8).
   open gaps through the stop (defensible, rare — F10); concentration
   share can exceed 100% when the ex-top book nets a loss (correct
   ordering for check 6; robust under the E5 alternate denominator — F11).
+
+## A1 (simulator/strategy session) — findings and adjudications
+
+Second independent review session; line-by-line over simulator, strategy,
+indicators, protocol and run_sim. **No look-ahead was found in any
+decision, indicator, ranking or fill path.** Findings, with the builder's
+adjudication recorded transparently (protocol R1 — adjudications default
+to the stricter treatment):
+
+- **Finding 1 — VERIFIED ERROR, FIXED.** "Reached +1R" (trail activation,
+  time-stop skip) was measured on closes only, while the engine's own 3R
+  partial fills off the intrabar high — two contradictory intrabar
+  semantics for the same concept, and the closes-only reading was never
+  documented as an interpretation choice. A trade could bank its +3R
+  partial and still be time-stopped for "never reaching +1R". Adjudicated
+  an error (undocumented interpretation contradicting the spec's plain
+  reading AND internally inconsistent). Fix: `max_r` now tracks the bar's
+  high (simulator.py); regression tests pin both the time-stop-skip and
+  trail-activation cases. Direction: ambiguous. In EXP-007 the three
+  time-stopped trades took no partial, so the bite is plausible but
+  unproven without the rerun — hence the R1 rerun below.
+- **Finding 2 — VERIFIED ERROR, FIXED.** No cash floor: aggregate notional
+  could exceed equity (leverage a spot account cannot have — D-015 "no
+  leverage"). Per-trade R/pct are provably invariant to the cash path, and
+  in EXP-007 the worst concurrent clusters imply ~45–55% summed notional,
+  so it almost certainly never bound — the rerun's `cash` skip counter
+  verifies that. Fix: entries beyond available cash are refused and
+  counted; the costs.yaml small-order bound (0.1% of fill-bar volume) is
+  now enforced the same way (`size_bound`). Regression tests added.
+- **Finding 3 — interpretation gap, DIAGNOSTIC.** Three 2021-entry trades
+  (net +2.49 R) sit in EXP-007's headline numbers though D-020 calls 2021
+  training-only; the folds correctly exclude them. The pre-registered
+  checks were defined over the primary run as specified (window starts
+  2021-01-01), so per R1 the checks stay as defined; the rerun reports the
+  ex-2021 view as a diagnostic. Excluding them changes no check's outcome
+  (expectancy +0.283 still passes; concentration gets worse).
+- **Findings 5–9 — minor/cosmetic, recorded.** Entry-postponement
+  docstring corrected (entries cancel, exits postpone — code was already
+  conservative and test-pinned); partial fills at target on gap-above
+  (deflating, matches its declaration); mixed R bases (sizing at signal
+  close vs management at fill — undocumented, both-ways, immaterial on
+  daily bars; to be pinned in any future spec); `stop<=0` bypasses the I2
+  skip counter (undercount only); regime tagged at signal close vs fold at
+  fill date (one-day skew, correct for every EXP-007 trade checked).
+- **Finding 10 — timestamps RECONCILED.** EXP-007.md says "Run:
+  2026-08-27" while the pre-registration headers say 2026-08-28. The
+  header dates were a drafting label error; git commit times are
+  authoritative and prove the ordering: pre-registration + runner
+  committed `990927f` 2026-08-27 **17:19:11 UTC**, Oskaras's results
+  committed `56db25e` 2026-08-27 **18:36:23 UTC** (21:36 +03:00) — 77
+  minutes later. Same pattern for every sprint: each NOTES pre-registration
+  commit precedes its results commit in git history.
+
+**The SOL 2023-10-17 trade (the mandatory trace): fully explained by the
+written rules — not a bug.** Every step verified legal: rank-6-by-volume
+universe membership from committed data, RS/breakout/volume/extension
+gates evaluated look-ahead-free, stop = close − 2×ATR(14) ≈ 10% (under
+the guard), 78-bar hold legal because the trade cleared +1R within days
+(HYP-004: "15 bars only if the trade never reached +1R" — under both old
+and fixed semantics), 1/3 banked at ≈1.30× entry in early Nov, 10-day-low
+trail ratcheted through the run, final 2/3 exited at the trailed stop on
+the Jan-3 crash day, R-blend arithmetic a straight cost-adjusted cash-flow
+sum over one initial-risk denominator (cross-checked: trailed stop ≈
+$97–100 vs $24.6 entry matches SOL's actual late-Dec 10-day lows).
+Findings 1 and 7 do not touch this trade. What remains for the founders is
+A4: confirm those bars against the public chart.
+
+## R1 mechanical rerun (built; runs LOCAL)
+
+Per R1 the three verified errors (F1 baseline, Findings 1–2) are fixed and
+EXP-007 reruns under the seven UNCHANGED checks: `audit/r1_rerun.py`
+(fixed engine + compliant same-exit baseline with (r+1)/(N+1), unbounded
+entry pool, strategy return convention, 2,000 sims, seed 20260901). It
+writes `EXP-007-AUDIT-R1.md` and prints the trade-set diff vs the
+committed record; the original EXP-007.md stays untouched. Honest
+expectation, recorded before running: the baseline bug favored the
+strategy, so p most plausibly worsens; Findings 1–2 are ambiguous/neutral
+here. 68 unit tests pass on the fixed engine.
+
+## E4 addendum — Holm correction across the variant ledger (Step-3 request)
+
+Raw p-values by lineage, Holm-adjusted within lineage (adjustment can only
+raise p; every experiment's other failed checks are untouched by it):
+
+| Lineage | Configs | Raw p per test | Holm-adjusted |
+|---|---|---|---|
+| HYP-001 (4) | EXP-001 p=0.90 (grid EXP-002 reported no per-variant p) | 0.90 | 0.90 |
+| HYP-002 (1) | EXP-003 p=0.302 | 0.302 | 0.302 |
+| HYP-003 (1) | EXP-004 p=0.362 | 0.362 | 0.362 |
+| HYP-004 (3) | EXP-005 0.068 · EXP-006 0.014 · EXP-007 0.1645 | — | 0.136 · 0.042 · 0.1645 |
+
+EXP-006's p survives Holm (0.042) but EXP-006 failed on the 2× stress
+(PF 0.96) and a 52.9% drawdown regardless. EXP-005 rises 0.068 → 0.136;
+EXP-007 stays 0.1645 (largest). Nothing improves; the failures sharpen.
+Adopted going forward: every future EXP report carries its lineage variant
+counter and the Holm-adjusted p alongside the raw one.
 
 ## Process incidents
 

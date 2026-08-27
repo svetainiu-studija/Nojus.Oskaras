@@ -52,7 +52,8 @@ def run_sim(data, universe, btc, cost_model, stress=False,
     pol = hyp_policy()
     pol.stop_mode = stop_mode
     sim = Simulator(data, universe, btc, cost_fn, strategy, pol,
-                    research_range=(RESEARCH_START_MS, HOLDOUT_START_MS))
+                    research_range=(RESEARCH_START_MS, HOLDOUT_START_MS),
+                    size_bound_frac=0.001)
     return sim.run()
 
 

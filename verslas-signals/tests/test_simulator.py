@@ -96,9 +96,11 @@ class SimulatorTest(unittest.TestCase):
         self.assertAlmostEqual(t["r"], 0.0, places=9)
 
     def test_max_positions_cap(self):
+        # stop 80 -> notional 500/position so six fit in cash (spot: the
+        # simulator now refuses entries beyond available cash, AUDIT F2)
         bars = [(100, 101, 99, 100, 10)] * 4
         data = {f"P{k}": make_pair(bars) for k in range(7)}
-        plan = {f"P{k}": (0, 95.0) for k in range(7)}
+        plan = {f"P{k}": (0, 80.0) for k in range(7)}
         sim = run(data, plan)
         self.assertEqual(len(sim.positions), 6)
         self.assertGreaterEqual(sim.skips["slots"], 1)
@@ -315,6 +317,63 @@ class HoldoutGuardTest(unittest.TestCase):
                 w.writerow([HOLDOUT_START_MS + DAY, 3, 3, 3, 3, 3])  # sealed
             data = load_daily_dir(Path(td), HOLDOUT_START_MS)
             self.assertEqual(len(data["BTC-USDT"]["ts"]), 1)
+
+
+class AuditFixTest(unittest.TestCase):
+    """Pins the AUDIT-2026-08 R1 fixes (Findings 1 and 2)."""
+
+    def test_time_stop_skipped_on_intrabar_1r_touch(self):
+        # entry 100 stop 95 (risk 5). Bar 1's HIGH hits 105.5 (+1.1R) but no
+        # close ever exceeds +0.2R. Finding 1 fix: "reached +1R" counts the
+        # high, so the 2-bar time stop must NOT fire.
+        from engine.simulator import ExitPolicy as EP
+        a = make_pair([(100, 101, 99, 100, 10), (100, 105.5, 99.5, 101, 10),
+                       (101, 101.5, 100.5, 101, 10), (101, 101.5, 100.5, 101, 10),
+                       (101, 101.5, 100.5, 101, 10)])
+        sim = run({"A": a}, {"A": (0, 95.0)},
+                  policy=EP(time_stop_bars=2, time_stop_skip_if_r=1.0,
+                            trail_mode="after_r", trail_after_r=99.0,
+                            stop_mode="resting_stop", partial_frac=0.0))
+        self.assertEqual(len(sim.trades), 0)   # never time-stopped
+        self.assertIn("A", sim.positions)      # still riding at window end
+
+    def test_trail_activates_on_intrabar_1r_touch(self):
+        # Same touch geometry; trail (3-day-low) must arm off the high and
+        # ratchet the stop to 100, where bar 4 stops out at breakeven.
+        from engine.simulator import ExitPolicy as EP
+        a = make_pair([(100, 101, 99, 100, 10), (100, 106, 100, 101, 10),
+                       (101, 102, 100, 101, 10), (101, 102, 100, 101, 10),
+                       (100, 101, 99, 100, 10)])
+        sim = run({"A": a}, {"A": (0, 95.0)},
+                  policy=EP(time_stop_bars=99, trail_mode="after_r",
+                            trail_after_r=1.0, trail_lookback=3,
+                            stop_mode="resting_stop", partial_frac=0.0))
+        self.assertEqual(len(sim.trades), 1)
+        t = sim.trades[0]
+        self.assertEqual(t["exit_reason"], "stop")
+        self.assertAlmostEqual(t["r"], 0.0, places=9)  # trailed to entry, not 95
+
+    def test_cash_floor_no_leverage(self):
+        # stop 98 -> risk 2 -> units 50 -> notional 5000/position. Two fit a
+        # 10k spot account exactly; the third must be refused (Finding 2 fix).
+        bars = [(100, 101, 99, 100, 10)] * 4
+        data = {p: make_pair(bars) for p in ("A", "B", "C")}
+        plan = {p: (0, 98.0) for p in ("A", "B", "C")}
+        sim = run(data, plan)
+        self.assertEqual(len(sim.positions), 2)
+        self.assertEqual(sim.skips["cash"], 1)
+
+    def test_size_bound_skip(self):
+        # volume 10 -> bound 0.001*10 = 0.01 units; the 20-unit order is
+        # refused when the bound is enabled (costs.yaml small-order tier)
+        a = make_pair([(100, 101, 99, 100, 10)] * 4)
+        n = 4
+        sim = Simulator({"A": a}, full_universe({"A": a}), bull_btc(n),
+                        zero_cost, FakeStrategy({"A": (0, 95.0)}), ExitPolicy(),
+                        size_bound_frac=0.001)
+        sim.run()
+        self.assertEqual(len(sim.positions), 0)
+        self.assertEqual(sim.skips["size_bound"], 1)
 
 
 if __name__ == "__main__":
