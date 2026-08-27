@@ -11,19 +11,19 @@ checks), or **DIAGNOSTIC** (R3: narrative only, never a verdict).
 |---|---|---|
 | A1 code review — statistics/costs/baselines session | CLOUD | **DONE — 1 VERIFIED ERROR (F1)** + minors, below |
 | A1 code review — simulator/strategy session | CLOUD | **DONE — 2 VERIFIED ERRORS (Findings 1, 2, both FIXED)** + minors, below |
-| A2 clean-room reproduction | LOCAL | pending (script ships after A1) |
+| A2 clean-room reproduction | LOCAL | **DROPPED** (D-023 amendment, 2026-08-28) |
 | A3 look-ahead property tests | CLOUD | **DONE — NO ERROR** |
 | A4 manual chart verification | FOUNDERS | pending (sample below) |
 | B1 audit battery on widened raw data | LOCAL | **DONE — PASS, NO ERROR** (2026-08-28, below) |
 | B2 gaps/duplicates | done 2026-08-27 | **NO ERROR** (run.py quality: 195 files, 0 missing, 0 dupes) |
-| B3 independent universe recomputation | LOCAL | pending (script ships) |
+| B3 independent universe recomputation | LOCAL | **DROPPED** (D-023 amendment; B4's availability proof + A1's universe.py review stand) |
 | B4 availability-vs-strategy | CLOUD | **DONE — NO ERROR** |
 | B5 cross-venue price check | FOUNDERS | pending (trade list below) |
 | C1 costs.yaml vs reality | FOUNDERS | pending (Nojus) |
 | C2 cost double-count walkthrough | CLOUD | **DONE — NO ERROR** (matched to 6 decimals, below) |
 | C3 execution-semantics check | CLOUD | **DONE** — declared model matches code except Findings 1/2 (fixed) and cosmetic notes |
 | D1 SOL legitimacy | mixed | code-side **DONE** (full mechanics trace below: legal, no bug); chart check in A4 |
-| D2 restricted-universe recomputation | LOCAL | pending |
+| D2 restricted-universe recomputation | LOCAL | **DROPPED** (D-023 amendment — EXP-007-only diagnostic) |
 | D3 era analysis | CLOUD | **DONE — DIAGNOSTIC** (major, below) |
 | E1 independent stats recomputation | CLOUD | **DONE — NO ERROR** (one episode, below) |
 | E2 independent bootstrap | CLOUD | **DONE — NO ERROR** |
@@ -114,6 +114,37 @@ Pre-specified alternates only. Net-R share (the pre-registered check 6):
 check 6 fails under either denominator. The >100% net share is not a bug:
 the non-SOL book nets a loss, shrinking the denominator below SOL's
 contribution (the audit/e1 checker reproduces it independently).
+
+## C1 correction (recorded 2026-08-28): SPOT schedule, not futures
+
+Oskaras's D-024 message cited OKX's **futures** Level-1 rates (0.02%
+maker / 0.05% taker, funding separate). **That schedule does not apply to
+this project**: the instrument universe is spot-only (D-003, CLAUDE.md
+rule 1), so there is no funding component at all and the relevant page is
+OKX's **spot** fee schedule for a regular-user account. costs.yaml models
+a spot taker fill (0.10% taker + half-spread + slippage per leg, tiered
+by pair). C1 (Nojus) = read the live SPOT fee page, record the account's
+actual tier and maker/taker rates, note that the strategy fills as taker
+(market-ish entries at open, resting stops), eyeball spreads on 5 majors
++ 5 small pool pairs, and compare against costs.yaml. Agreed stance
+stands: the model stays conservative — a slightly cheaper live fee does
+not resurrect an edge that failed at conservative costs.
+
+## A4 / B5 evidence templates (fill in; Claude logs results here)
+
+A4 verdict rule (fixed): PASS if the chart agrees with the simulated
+price path — even if the trade is economically unattractive; FAIL stops
+the audit close and triggers investigation. B5 pass condition: direction,
+timing and magnitude of the move materially consistent on a second venue;
+small venue differences expected.
+
+| B5 trade | Sim entry | Sim exit | R | Second venue agrees? | Material discrepancy? |
+|---|---|---|---|---|---|
+| SOL-USDT | 2023-10-17 | 2024-01-03 | +21.36 | | |
+| BTC-USDT | 2023-10-17 | 2023-11-12 | +4.51 | | |
+| APE-USDT | 2023-01-05 | 2023-02-09 | +3.58 | | |
+| SHIB-USDT | 2024-11-07 | 2024-11-26 | +2.46 | | |
+| BTC-USDT | 2021-07-27 | 2021-08-16 | +2.34 | | |
 
 ## Founder tasks (paste results into chat; Claude logs them here)
 

@@ -1,5 +1,13 @@
 # Forensic audit protocol — AUDIT-2026-08 (pre-registered, D-023)
 
+**AMENDED 2026-08-28 (D-023 amendment, Oskaras):** the audit closes **Fri
+2026-09-04** (was 09-11). DROPPED: A2 clean-room reproduction, the
+standalone fresh-seed E3 reproduction (superseded — the compliant
+same-exit baseline ran inside the R1 rerun), B3, D2, and any EXP-007-only
+diagnostic that cannot change the decision. Everything else ran to
+completion; open at amendment time: A4, B5 (Oskaras) and C1 (Nojus).
+R1–R6 unchanged.
+
 Declared 2026-08-28, committed BEFORE any audit test below is run. Proposed
 by Oskaras; scope agreed as: **verify the conclusion, do not reopen the
 search.** The conclusion under audit: "signal research is over because
