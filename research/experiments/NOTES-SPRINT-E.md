@@ -33,3 +33,34 @@ table, always-in-universe run, independent reproduction from raw data by a
 separate session, then G0 judgment with variant counting: HYP-004 lineage =
 3 tested configurations). Fail any → recorded as failed; **no further
 rounds; the CHARTER §9 pivot discussion follows.**
+
+---
+
+## OUTCOME (2026-08-28): FAILED — 4 of 7 checks. Signal research ends.
+
+Run by Oskaras on the widened dataset (`DATASET-ff106e72bc5e` raw /
+`DATASET-8b092d267524` derived; 65 pairs — MKR and EOS unlisted on OKX,
+skipped per I2; SEI's whole history falls inside the sealed holdout so 64
+pairs load). Frozen-config parity held: `0e4dc9e0453a`. Report: EXP-007.md.
+
+The widened universe answered EXP-005's open question, and the answer is
+the bad one: **the HYP-004 result was one coin's era, not a thin real
+edge.**
+
+- p-value **worsened** with more data: 0.068 → **0.1645**. A real edge
+  sharpens as the sample grows; this diluted.
+- **SOL-USDT = 148% of total profit** (the rest of the book nets a loss);
+  ex-SOL expectancy **−0.159 R**. Both concentration checks failed.
+- Folds 3/7 (was 4/7). All profit sits in the "range" regime — 6 trades,
+  +4.09 R each on average: a handful of SOL runs. Bear and bull regimes
+  are both negative.
+- What still passed — trade count, raw expectancy, cost stress — shows the
+  strategy is robust to *costs* but not to *reality*: with real competition
+  for the leadership slots, the entries don't select winners.
+
+Per the pre-registered rule and D-022: HYP-006 is FAILED and closed, no
+further rounds, and the CHARTER §9 pivot discussion is mandatory →
+`research/PIVOT-DISCUSSION-2026-08.md`. Variant accounting at close:
+HYP-001 lineage 4 configs, HYP-002 1, HYP-003 1, HYP-004 lineage 3
+(EXP-005, EXP-006, EXP-007) — 9 configurations total, every one recorded,
+every verdict fired by a rule written before the result existed.
