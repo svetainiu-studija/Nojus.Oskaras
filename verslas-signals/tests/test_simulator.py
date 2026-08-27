@@ -153,6 +153,46 @@ class SimulatorTest(unittest.TestCase):
         t = sim.trades[0]
         self.assertAlmostEqual(t["r"], -2.0, places=9)  # 20 units * -10 / 100
 
+    def test_time_stop_skipped_after_reaching_1R(self):
+        # policy: 2-bar time stop, skipped if the trade ever saw +1R.
+        # entry 100 stop 95 (risk 5). closes reach 105 (+1R) -> no time exit;
+        # later the raised trail stops it out instead.
+        a = make_pair([(100, 101, 99, 100, 10), (100, 106, 100, 105, 10),
+                       (105, 107, 104, 106, 10), (106, 107, 105, 106, 10),
+                       (106, 106, 96, 97, 10), (97, 98, 96, 97, 10)])
+        from engine.simulator import ExitPolicy as EP
+        sim = run({"A": a}, {"A": (0, 95.0)},
+                  policy=EP(time_stop_bars=2, time_stop_skip_if_r=1.0,
+                            trail_mode="after_r", trail_after_r=1.0,
+                            trail_lookback=3, stop_mode="resting_stop",
+                            partial_frac=0.0))
+        self.assertEqual(len(sim.trades), 1)
+        t = sim.trades[0]
+        self.assertEqual(t["exit_reason"], "stop")     # trail, not time
+        self.assertGreater(t["bars_held"], 2)          # outlived the time stop
+
+    def test_time_stop_fires_when_never_1R(self):
+        a = make_pair([(100, 101, 99, 100, 10)] * 6)
+        from engine.simulator import ExitPolicy as EP
+        sim = run({"A": a}, {"A": (0, 95.0)},
+                  policy=EP(time_stop_bars=2, time_stop_skip_if_r=1.0))
+        self.assertEqual(sim.trades[0]["exit_reason"], "time")
+
+    def test_strategy_signal_exit_hook(self):
+        a = make_pair([(100, 101, 99, 100, 10)] * 5)
+
+        class ExitingStrategy(FakeStrategy):
+            def wants_exit(self, sim, pair, i, ts):
+                return i >= 2
+
+        n = 5
+        sim = Simulator({"A": a}, full_universe({"A": a}), bull_btc(n),
+                        zero_cost, ExitingStrategy({"A": (0, 95.0)}),
+                        ExitPolicy())
+        sim.run()
+        self.assertEqual(sim.trades[0]["exit_reason"], "signal")
+        self.assertEqual(sim.trades[0]["exit_ts"], T0 + 3 * DAY)
+
     def test_costs_are_paid_both_ways(self):
         a = make_pair([(100, 101, 99, 100, 10), (100, 101, 93, 94, 10),
                        (93, 94, 92, 93, 10), (93, 94, 92, 93, 10)])

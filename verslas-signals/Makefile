@@ -23,5 +23,8 @@ universe:
 exp001:
 	python3 -m engine.experiment
 
+exp003:
+	python3 -m engine.exp003
+
 test:
 	python3 -m unittest discover -s tests -v

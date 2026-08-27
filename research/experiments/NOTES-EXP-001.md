@@ -61,3 +61,26 @@ the observed +1.13 R mean on forced time exits.
 cannot reach G0's ≥200-trade requirement on daily bars × 30 pairs. If HYP-001
 survives EXP-002, frequency must come from more pairs and/or the 4h timeframe
 — each a new pre-registered experiment, never a silent widening.
+
+---
+
+## OUTCOME (2026-08-28): the rule fired — HYP-001 is ABANDONED
+
+EXP-002 grid results: A −0.319 R (PF 0.67) · **B −0.036 R (PF 0.94, maxDD
+8.9%)** · C −0.248 R (PF 0.75) · D −0.044 R (PF 0.93). No variant reached
+expectancy > 0; every variant sat at 2/7 folds positive. Per the decision rule
+above, HYP-001 is abandoned under its own falsifier. It is not to be revived
+by further variants; a structurally different pullback idea would be a new
+hypothesis file with its own pre-registration.
+
+**What carries forward:**
+1. The BTC/trend regime filters demonstrably add value (EXP-001b) — retained
+   as a concept for future hypotheses.
+2. **Execution finding:** close-confirm stop execution with tight stops loses
+   ~0.28 R/trade to gap overshoot versus a resting stop order. → Declared
+   *before any HYP-002 result exists*: **resting-stop is the primary
+   execution model for all subsequent strategies**, with close-confirm
+   reported once per strategy as an execution sensitivity. (See
+   NOTES-SPRINT-B.md.)
+3. Signal frequency on daily × 30 pairs is structurally low; any strategy
+   reaching provisional G0 will need a pre-registered frequency extension.

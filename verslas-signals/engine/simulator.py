@@ -42,6 +42,11 @@ class ExitPolicy:
     stop_mode: str = "close_confirm"  # or "resting_stop" (fills at the level
                                       # when the bar's low touches it; at the
                                       # open if the bar gaps through)
+    trail_mode: str = "after_partial"  # or "after_r": trail once max
+                                       # unrealised R >= trail_after_r
+    trail_after_r: float = 1.0
+    time_stop_skip_if_r: float = None  # skip the time stop if the trade has
+                                       # ever reached this unrealised R
 
 
 class Position:
@@ -59,6 +64,7 @@ class Position:
         self.regime = regime
         self.bars_held = 0
         self.half_taken = False
+        self.max_r = 0.0                  # best unrealised R seen at a close
         self.cash_flow = 0.0              # net cash from fills (incl. entry)
 
 
@@ -262,16 +268,28 @@ class Simulator:
             if i is None:
                 continue
             pos.bars_held += 1
-            if pos.half_taken and i >= self.policy.trail_lookback:
+            close = d["close"][i]
+            risk_px = pos.entry_px - pos.stop0
+            if risk_px > 0:
+                pos.max_r = max(pos.max_r, (close - pos.entry_px) / risk_px)
+            trail_on = (pos.half_taken if self.policy.trail_mode == "after_partial"
+                        else pos.max_r >= self.policy.trail_after_r)
+            if trail_on and i >= self.policy.trail_lookback:
                 trail = min(d["low"][i - self.policy.trail_lookback + 1:i + 1])
                 pos.stop = max(pos.stop, trail)
-            close = d["close"][i]
+            time_due = (pos.bars_held >= self.policy.time_stop_bars
+                        and (self.policy.time_stop_skip_if_r is None
+                             or pos.max_r < self.policy.time_stop_skip_if_r))
             if self.policy.stop_mode == "close_confirm" and close < pos.stop:
                 self.pending_exits.append((pair, "stop"))
-            elif pos.bars_held >= self.policy.time_stop_bars:
+            elif time_due:
                 self.pending_exits.append((pair, "time"))
             elif self.policy.regime_exit and btc_bearish:
                 self.pending_exits.append((pair, "regime"))
+            else:
+                wants = getattr(self.strategy, "wants_exit", None)
+                if wants is not None and wants(self, pair, i, ts):
+                    self.pending_exits.append((pair, "signal"))
 
         # new entries (blocked while BTC is below its SMA50, unless ablated)
         if btc_bearish and self.btc_entry_gate:
