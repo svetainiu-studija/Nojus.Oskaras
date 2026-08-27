@@ -23,7 +23,7 @@ Updated: 2026-08-26 · Phase: **0 — Set up** · Revenue: €0 (by design) · N
 |---|---|---|---|
 | 1 | ~~Confirm/override D-001…D-014; agree risk limits; choose budget scenario~~ **Done 2026-08-26** (D-015, D-016) | Both | ✔ |
 | 2 | Founder agreement put in writing and signed. Founders affirm the mutual agreement holds and no one walks away — the written version exists to prevent misunderstanding, not to signal distrust: fix equity split, vesting, IP to the future MB, account/handle ownership, leaver terms (template; lawyer review if budget allows) | Both | 9 Sep |
-| 3 | Book lawyer consult; send the 6 questions from DECISIONS.md | Nojus | 2 Sep |
+| 3 | Send the 6 questions to the lawyer (Oskaras's cousin, a lawyer, offered to help — ready-to-send Lithuanian version in `legal/QUESTIONS-FOR-LAWYER.md`). **Answers must be in writing** (email suffices). Any "unclear / it depends" answer → that question goes to a fintech specialist before G3. Answers logged as D-017+ | Nojus | 2 Sep |
 | 4 | Check OKX Europe lead-trader (spot) eligibility and affiliate access; Kraken and Bitvavo affiliate access and promotion rules | Nojus | 2 Sep |
 | 5 | Verify Stripe / Paddle / Whop acceptable-use policies for a paid signal community | Nojus | 5 Sep |
 | 6 | Brand name shortlist (5) with handle/domain availability; reserve handles | Nojus | 5 Sep |
