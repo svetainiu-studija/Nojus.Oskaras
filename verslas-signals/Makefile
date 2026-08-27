@@ -26,5 +26,8 @@ exp001:
 exp003:
 	python3 -m engine.exp003
 
+exp004:
+	python3 -m engine.exp004
+
 test:
 	python3 -m unittest discover -s tests -v

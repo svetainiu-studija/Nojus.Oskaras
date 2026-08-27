@@ -30,6 +30,9 @@ class EntryIntent:
     pair: str
     stop_px: float          # initial hard stop (absolute price)
     signal_i: int           # pair-local index of the signal close
+    partial_px: float = None  # optional absolute partial target; the fill
+                              # price becomes min(policy 2R target, this)
+                              # when it sits above the entry
 
 
 @dataclass
@@ -77,8 +80,10 @@ class Simulator:
     """
 
     def __init__(self, data, universe, btc_ctx, cost_fn, strategy, policy,
-                 start_equity=10_000.0, research_range=None, btc_entry_gate=True):
+                 start_equity=10_000.0, research_range=None, btc_entry_gate=True,
+                 max_positions=MAX_POSITIONS):
         self.btc_entry_gate = btc_entry_gate
+        self.max_positions = min(max_positions, MAX_POSITIONS)
         self.data = data
         self.universe = universe
         self.btc = btc_ctx
@@ -209,7 +214,7 @@ class Simulator:
                 self.skips["zero_volume"] += 1
                 continue  # cancel: the setup's price basis is stale
             # re-verify caps at fill time (exits above may have freed room)
-            if len(self.positions) >= MAX_POSITIONS:
+            if len(self.positions) >= self.max_positions:
                 self.skips["slots"] += 1
                 continue
             if self.heat() + risk_frac > HEAT_CAP + 1e-12:
@@ -224,6 +229,11 @@ class Simulator:
             pos = Position(pair, units, px, intent.stop_px, risk_amount,
                            risk_frac, ts, regime)
             pos.cash_flow = -units * px * (1.0 + cost)
+            target_2r = px + self.policy.partial_r * (px - intent.stop_px)
+            if intent.partial_px is not None and intent.partial_px > px:
+                pos.partial_px = min(target_2r, intent.partial_px)
+            else:
+                pos.partial_px = target_2r
             self.positions[pair] = pos
         self.pending_entries = still_entries
 
@@ -243,7 +253,9 @@ class Simulator:
                     continue
             if self.policy.partial_frac <= 0 or pos.half_taken:
                 continue
-            target = pos.entry_px + self.policy.partial_r * (pos.entry_px - pos.stop0)
+            target = getattr(pos, "partial_px", None)
+            if target is None:
+                target = pos.entry_px + self.policy.partial_r * (pos.entry_px - pos.stop0)
             if d["high"][i] >= target:
                 qty = pos.units0 * self.policy.partial_frac
                 self._fill_exit(pair, target, ts, units=min(qty, pos.units),
@@ -311,7 +323,7 @@ class Simulator:
                 self.skips["stop_wide"] += 1
                 continue
             if len(self.positions) + sum(1 for e in self.pending_entries
-                                         if e[0].pair != pair) >= MAX_POSITIONS:
+                                         if e[0].pair != pair) >= self.max_positions:
                 self.skips["slots"] += 1
                 continue
             risk_frac = RISK_PER_TRADE

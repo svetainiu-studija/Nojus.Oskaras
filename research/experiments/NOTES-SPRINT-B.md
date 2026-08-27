@@ -38,3 +38,19 @@ Interpretation choices (documented, not tuned):
 - Anything less → HYP-002 recorded as failed; Sprint C decision (HYP-003, or
   the CHARTER §9 pivot discussion) follows. No further HYP-002 variants
   without a new pre-registration in this file.
+
+---
+
+## OUTCOME (2026-08-28): FAILED — insufficient frequency, by its own geometry
+
+EXP-003: **4 trades** in 4.5 years (+0.365 R, PF 2.95, stress-robust, but 2/7
+folds and p=0.302 — unfalsifiable at n=4). Root cause, from the funnel: **82
+triggers, 78 rejected by the ≤10% stop rule** — a momentum leader breaking
+out to a 20-day high is structurally >10% above its own 10-day low, so the
+hypothesis forbids almost every trade its setup generates. The four entries
+that passed all sit in post-bear range compression.
+
+Reading: cross-sectional momentum is **untested rather than disproven**; the
+hypothesis's stop geometry contradicts its entry. A volatility-scaled-stop
+momentum idea would be a NEW hypothesis (HYP-004+) with its own
+pre-registration and founders' sign-off — not a variant of this one.
