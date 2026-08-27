@@ -1,0 +1,5 @@
+pair,entry,exit,r,pct,bars_held,regime,fold,exit_reason
+ETH-USDT,2023-01-10,2023-01-29,1.921,0.1880,19,bear,2023-H1,signal
+AAVE-USDT,2023-09-29,2023-10-09,-0.507,-0.0449,10,bear,2023-H2,stop
+TRX-USDT,2023-10-04,2023-10-19,-0.242,-0.0200,15,bear,2023-H2,time
+TRX-USDT,2024-10-04,2024-10-10,0.287,0.0151,6,bear,2024-H2,regime
