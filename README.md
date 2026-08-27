@@ -28,5 +28,5 @@ The shared workspace for our business: a pseudonymous crypto trading-intelligenc
 
 - STATUS.md is the single source of truth for "where are we" — update it at every sync.
 - A decision isn't made until it's in DECISIONS.md with a status.
-- The strategy code lives in a **separate private repo** (`verslas-signals`, layout in PLAN-90-DAYS.md) — created in Phase 0, task 0.9. Nothing secret (keys, credentials, strategy parameters) ever goes in *this* repo.
+- Strategy-work scaffolding currently lives in [`verslas-signals/`](verslas-signals/) (data pipeline, dataset versioning, cost model) and will be split into a separate private repo when created (task 0.9). Nothing secret (keys, credentials, tuned strategy parameters) ever goes in *this* repo.
 - None of the documents here are legal advice; the lawyer consult (task 0.4) validates the legal positions before money moves.

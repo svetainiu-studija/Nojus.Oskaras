@@ -1,0 +1,39 @@
+# Research universe — DRAFT (~30 liquid OKX spot USDT pairs).
+# The final universe is fixed by a liquidity rule (e.g. top-30 by 30-day volume,
+# applied as-of each rebalance date to avoid survivorship bias) BEFORE the
+# holdout dates are locked. Edit freely until then; after lock, changes = new dataset.
+exchange: okx
+quote: USDT
+pairs:
+  - BTC/USDT
+  - ETH/USDT
+  - SOL/USDT
+  - XRP/USDT
+  - DOGE/USDT
+  - ADA/USDT
+  - TRX/USDT
+  - LINK/USDT
+  - AVAX/USDT
+  - DOT/USDT
+  - LTC/USDT
+  - TON/USDT
+  - UNI/USDT
+  - ATOM/USDT
+  - XLM/USDT
+  - ETC/USDT
+  - FIL/USDT
+  - APT/USDT
+  - ARB/USDT
+  - OP/USDT
+  - INJ/USDT
+  - SUI/USDT
+  - NEAR/USDT
+  - AAVE/USDT
+  - ALGO/USDT
+  - SAND/USDT
+  - MANA/USDT
+  - GRT/USDT
+  - CRV/USDT
+  - SHIB/USDT
+timeframes: ["1d", "4h", "1h"]
+since: "2021-01-01"

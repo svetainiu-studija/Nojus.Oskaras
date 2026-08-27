@@ -1,0 +1,41 @@
+# Cost model (task 0.10). Applied to EVERY backtest; stress runs use stress_multiplier.
+# Values marked VERIFY must be checked against the live fee pages before the first
+# G0 review (owner: Nojus reviews, Oskaras applies). Assumptions are deliberately
+# conservative — it is better to under-claim an edge than to invent one.
+
+stress_multiplier: 2.0        # protocol step 4: stress at 2x costs
+
+exchanges:
+  okx:
+    # VERIFY at https://www.okx.com/fees — regular-user spot tier assumed
+    taker_fee: 0.0010          # 0.10 %
+    maker_fee: 0.0008          # 0.08 %
+    min_order_usd: 5           # VERIFY per-pair minimums
+  kraken:
+    # VERIFY at https://www.kraken.com/features/fee-schedule — lowest-volume tier assumed
+    taker_fee: 0.0026          # 0.26 %
+    maker_fee: 0.0016          # 0.16 %
+    min_order_usd: 10          # VERIFY
+
+# Half-spread paid on entry and exit, by liquidity tier (bps of price). VERIFY empirically
+# from order-book snapshots during task 1.1; these are conservative placeholders.
+spread_bps:
+  tier1: 1     # BTC, ETH
+  tier2: 3     # top-10 alts
+  tier3: 8     # the rest of the universe
+
+# Additional slippage on top of spread, by order size as a fraction of the bar's volume.
+slippage_bps:
+  small: 2     # order < 0.1 % of bar volume
+  medium: 10   # 0.1–1 % of bar volume
+  large: null  # > 1 % of bar volume: do not model — the strategy must size below this
+
+execution:
+  delay_bars: 1              # signals computed at bar close execute at next bar open
+  missed_fill_rule: skip     # a limit order not filled within 1 bar is skipped, never chased
+  partial_fills: none        # all-or-nothing assumption (conservative for exits)
+
+tiers:
+  tier1: [BTC/USDT, ETH/USDT]
+  tier2: [SOL/USDT, XRP/USDT, DOGE/USDT, ADA/USDT, TRX/USDT, LINK/USDT, AVAX/USDT, DOT/USDT]
+  # everything else in pairs.yaml is tier3
