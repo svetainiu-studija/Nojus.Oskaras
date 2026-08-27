@@ -1,6 +1,8 @@
 # Strategy hypotheses (task 0.8)
 
-One file per hypothesis: `HYP-001.md`, `HYP-002.md`, `HYP-003.md` — blank templates ready to fill. `EXAMPLE.md` shows the level of detail needed; it is **an illustration, not one of your hypotheses**.
+**Status 2026-08-27: HYP-001…003 are drafted** (from the founders' interview in the Cowork session) — no longer blank. Founders: correct any rule that is not how you actually trade, and fill the remaining blanks (hit-rate estimates, what went wrong in 2025). Parameters marked **fixed** were set a priori and must not be optimised. `EXAMPLE.md` was the illustration used before drafting; it plays no further role.
+
+Test order: HYP-001 (Sprint A) → HYP-002 (Sprint B) → HYP-003 (Sprint C, droppable).
 
 Rules (from PLAN-90-DAYS, protocol step 1):
 

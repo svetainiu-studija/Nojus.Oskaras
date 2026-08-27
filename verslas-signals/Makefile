@@ -10,5 +10,11 @@ data:
 check:
 	python3 -m engine.data.quality data/raw
 
+audit:
+	python3 -m engine.data.audit data/raw
+
+universe:
+	python3 -m engine.universe data/raw/okx/1d --out data/universe.csv
+
 test:
 	python3 -m unittest discover -s tests -v
