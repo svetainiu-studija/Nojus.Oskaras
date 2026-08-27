@@ -39,18 +39,17 @@ def last_timestamp(path: Path) -> int | None:
 
 
 def fetch_pair(exchange, symbol: str, timeframe: str, since_ms: int, out_path: Path) -> int:
-    """Append bars from since_ms onward; returns number of bars written."""
+    """Append bars from since_ms onward; returns number of bars written.
+
+    The file is created lazily on the first received batch, so a failing pair
+    never leaves an empty header-only CSV behind.
+    """
     tf_ms = TIMEFRAME_MS[timeframe]
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    new_file = not out_path.exists()
     written = 0
     cursor = since_ms
     now_ms = int(time.time() * 1000)
-
-    with out_path.open("a", newline="") as f:
-        writer = csv.writer(f)
-        if new_file:
-            writer.writerow(["timestamp", "open", "high", "low", "close", "volume"])
+    f = writer = None
+    try:
         while cursor < now_ms:
             batch = None
             for attempt in range(MAX_RETRIES):
@@ -67,12 +66,22 @@ def fetch_pair(exchange, symbol: str, timeframe: str, since_ms: int, out_path: P
             rows = [b for b in batch if b[0] >= cursor and b[0] + tf_ms <= now_ms]
             if not rows:
                 break
+            if writer is None:
+                out_path.parent.mkdir(parents=True, exist_ok=True)
+                new_file = not out_path.exists()
+                f = out_path.open("a", newline="")
+                writer = csv.writer(f)
+                if new_file:
+                    writer.writerow(["timestamp", "open", "high", "low", "close", "volume"])
             for ts, o, h, l, c, v in rows:
                 writer.writerow([ts, o, h, l, c, v])
                 written += 1
             cursor = rows[-1][0] + tf_ms
             if len(batch) < 2:  # exchange returned a final sliver
                 break
+    finally:
+        if f is not None:
+            f.close()
     return written
 
 
@@ -91,11 +100,19 @@ def main(argv=None) -> None:
     since_default = parse_since(cfg["since"])
     out_root = Path(args.out) / ex_name
 
+    # skip pairs the exchange does not list instead of crashing the run
+    markets = exchange.load_markets()
+    missing = [p for p in cfg["pairs"] if p not in markets]
+    pairs = [p for p in cfg["pairs"] if p in markets]
+    if missing:
+        print(f"WARNING: not listed on {ex_name}, skipping: {', '.join(missing)}\n"
+              f"         (replace them in pairs.yaml with listed pairs)", file=sys.stderr)
+
     total = 0
     for timeframe in cfg["timeframes"]:
         if timeframe not in TIMEFRAME_MS:
             raise SystemExit(f"unknown timeframe {timeframe!r}")
-        for symbol in cfg["pairs"]:
+        for symbol in pairs:
             fname = symbol.replace("/", "-") + ".csv"
             path = out_root / timeframe / fname
             if args.force and path.exists():
@@ -107,7 +124,7 @@ def main(argv=None) -> None:
             n = fetch_pair(exchange, symbol, timeframe, since, path)
             total += n
             print(f"    +{n} bars -> {path}")
-    print(f"done: {total} new bars")
+    print(f"done: {total} new bars" + (f"; skipped unlisted: {', '.join(missing)}" if missing else ""))
 
 
 if __name__ == "__main__":
