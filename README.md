@@ -14,6 +14,7 @@ The shared workspace for our business: a pseudonymous crypto trading-intelligenc
 | [STATUS.md](STATUS.md) | Live status: done / open decisions / next actions / risks / log. Updated at every weekly sync |
 | [RESEARCH-2026-08-legal-and-market.md](RESEARCH-2026-08-legal-and-market.md) | Verified legal (MiCA, MAR, Lithuania, affiliates, tax) and market research with sources |
 | [research/PROMPTS-2026-08.md](research/PROMPTS-2026-08.md) | The research prompts, kept for re-verification before time-sensitive decisions |
+| [legal/](legal/) | Lawyer questions, review feedback, tripwires, research addenda — nothing in this repo is legal advice |
 
 ## The short version
 
