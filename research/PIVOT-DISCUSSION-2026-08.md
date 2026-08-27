@@ -1,7 +1,12 @@
 # CHARTER §9 pivot discussion (2026-08-28)
 
-For: Oskaras & Nojus · From: the build sessions · Status: **deferred —
-audit first (D-023, 2026-08-28).** The founders chose to verify the
+For: Oskaras & Nojus · From: the build sessions · Status: **RESOLVED by
+D-024 (accepted 2026-08-28)** — research verdict frozen NO EDGE / DO NOT
+TRADE; the business continues via the option-A discovery sprint
+(`business/DISCOVERY-2026-09.md`); option b remains the pre-agreed
+landing if discovery returns no-go. Original discussion kept below for
+the record. Previously: deferred —
+audit first (D-023, 2026-08-28). The founders chose to verify the
 conclusion before acting on it: a pre-registered forensic audit
 (`AUDIT-2026-08-PROTOCOL.md`, closes 2026-09-11) checks implementation,
 data, costs and statistics for verified errors. If the conclusion

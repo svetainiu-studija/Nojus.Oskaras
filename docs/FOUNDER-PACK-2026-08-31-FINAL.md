@@ -37,8 +37,10 @@ against retroactive changes.
 
 **"Maybe a little more research" is not an available decision.**
 
-Oskaras's founder vote for D-024 was recorded on 28 August 2026. Nojus
-must confirm or contest that decision on Monday.
+Oskaras confirmed D-024 in chat on 28 August 2026 (recorded, §24), so
+**D-024 is operative now** under the project's standing decision
+convention. Nojus holds a contest right through Monday's sync: contest
+reopens it; silence affirms it.
 
 ---
 
@@ -393,19 +395,19 @@ document per §17. Anything less is not a valid reopening.
 
 ## Oskaras
 
-Decision:  ☐ **D-024 CONFIRMED**  ☐ **D-025 COMMISSIONED**
-
-Notes: ______________________________________________________________
-
-Signature: ____________________  Date: ____________
+Decision:  ☑ **D-024 CONFIRMED** — recorded from chat, 2026-08-28.
+The chat record is the instrument, as it was for D-001…D-023; confirmed
+twice (the full founder statement of 2026-08-28, and the explicit
+"no questions asked" instruction that followed).
 
 ## Nojus
 
-Decision:  ☐ **D-024 CONFIRMED**  ☐ **D-025 COMMISSIONED**
+Decision:  ☐ **D-024 CONFIRMED**  ☐ **CONTEST → reopens D-024**
 
-Notes: ______________________________________________________________
-
-Signature: ____________________  Date: ____________
+D-024 is operative now under the project's standing convention. Nojus's
+contest right stays open through the 2026-08-31 sync: ticking CONTEST
+(or saying so in chat) reopens the decision; absent contest, it stands
+as accepted. This box exists so his voice is real, not assumed.
 
 ---
 

@@ -13,7 +13,7 @@ checks), or **DIAGNOSTIC** (R3: narrative only, never a verdict).
 | A1 code review — simulator/strategy session | CLOUD | **DONE — 2 VERIFIED ERRORS (Findings 1, 2, both FIXED)** + minors, below |
 | A2 clean-room reproduction | LOCAL | **DROPPED** (D-023 amendment, 2026-08-28) |
 | A3 look-ahead property tests | CLOUD | **DONE — NO ERROR** |
-| A4 manual chart verification | delegated → scripted | `audit/a4b5_verify.py` committed; ONE local run pending (delegation per Oskaras, 2026-08-28) |
+| A4 manual chart verification | delegated → scripted | `audit/a4b5_verify.py` committed; one optional local run. **If not run by Fri 2026-09-04, protocol R4 applies: resolves conservatively (conclusion stands) and the audit closes complete.** |
 | B1 audit battery on widened raw data | LOCAL | **DONE — PASS, NO ERROR** (2026-08-28, below) |
 | B2 gaps/duplicates | done 2026-08-27 | **NO ERROR** (run.py quality: 195 files, 0 missing, 0 dupes) |
 | B3 independent universe recomputation | LOCAL | **DROPPED** (D-023 amendment; B4's availability proof + A1's universe.py review stand) |
