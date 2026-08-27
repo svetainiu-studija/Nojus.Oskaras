@@ -1,8 +1,14 @@
 # CHARTER §9 pivot discussion (2026-08-28)
 
-For: Oskaras & Nojus · From: the build sessions · Status: **needs the
-founders' decision** (log it as D-023 when made). This discussion is
-mandatory under D-022: EXP-007 failed, and signal research is over.
+For: Oskaras & Nojus · From: the build sessions · Status: **deferred —
+audit first (D-023, 2026-08-28).** The founders chose to verify the
+conclusion before acting on it: a pre-registered forensic audit
+(`AUDIT-2026-08-PROTOCOL.md`, closes 2026-09-11) checks implementation,
+data, costs and statistics for verified errors. If the conclusion
+survives, the a/b/c choice below is made as **D-024**; if a verified
+error changes an experiment's verdict under its unchanged rules, the
+affected hypothesis re-enters where a pass would have put it. This
+discussion was mandatory under D-022: EXP-007 failed.
 
 ## What happened, in one paragraph
 
