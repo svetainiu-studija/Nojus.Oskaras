@@ -46,3 +46,14 @@ hypothesis, so the options are (a) a new hypothesis round — e.g. 4h
 timeframe, wider universe, volatility-scaled stops — each needing a fresh
 interview/pre-registration, or (b) the CHARTER §9 pivot discussion. We are in
 week 1 of 12; the hard stop is nowhere near.
+
+---
+
+## OUTCOME (2026-08-28): FAILED — the setup essentially does not exist
+
+EXP-004: **1 trade** in 4.5 years (TRX 2024-03-25, +0.246 R, time exit).
+The funnel shows the compound condition co-occurred exactly once across 30
+pairs — coin-specific capitulations of this depth, inside intact uptrends,
+while BTC is bullish, are a null set on daily bars. Nothing to validate or
+refute economically. **Reversals are dropped for good**, per the
+hypothesis's own intent. Decision memo: `research/DECISION-POINT-2026-08.md`.
