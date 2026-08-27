@@ -62,6 +62,11 @@ def fetch_pair(exchange, symbol: str, timeframe: str, since_ms: int, out_path: P
                     time.sleep(wait)
             if batch is None:
                 raise RuntimeError(f"{symbol} {timeframe}: giving up after {MAX_RETRIES} retries")
+            if not batch:
+                # empty window — e.g. the pair was listed after `since`: jump
+                # forward one window and keep looking instead of giving up
+                cursor += BATCH_LIMIT * tf_ms
+                continue
             # keep only complete, strictly-forward bars
             rows = [b for b in batch if b[0] >= cursor and b[0] + tf_ms <= now_ms]
             if not rows:
@@ -77,8 +82,6 @@ def fetch_pair(exchange, symbol: str, timeframe: str, since_ms: int, out_path: P
                 writer.writerow([ts, o, h, l, c, v])
                 written += 1
             cursor = rows[-1][0] + tf_ms
-            if len(batch) < 2:  # exchange returned a final sliver
-                break
     finally:
         if f is not None:
             f.close()
