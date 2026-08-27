@@ -235,7 +235,7 @@ def write_report(out_path: Path, ctx):
         "to this run.*",
     ]
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text("\n".join(lines))
+    out_path.write_text("\n".join(lines), encoding="utf-8")
 
 
 def main(argv=None):
