@@ -133,6 +133,26 @@ class SimulatorTest(unittest.TestCase):
         self.assertEqual(len(sim.trades), 1)
         self.assertEqual(sim.trades[0]["exit_ts"], T0 + 3 * DAY)
 
+    def test_resting_stop_fills_at_level(self):
+        # entry i=1 open 100, stop 95; i=2 low touches 94 -> fill AT 95
+        a = make_pair([(100, 101, 99, 100, 10), (100, 101, 99, 100, 10),
+                       (99, 100, 94, 96, 10), (96, 97, 95, 96, 10)])
+        sim = run({"A": a}, {"A": (0, 95.0)},
+                  policy=ExitPolicy(stop_mode="resting_stop"))
+        self.assertEqual(len(sim.trades), 1)
+        t = sim.trades[0]
+        self.assertEqual(t["exit_reason"], "stop")
+        self.assertAlmostEqual(t["r"], -1.0, places=9)  # exactly -1R, no gap
+
+    def test_resting_stop_gap_through_fills_at_open(self):
+        # i=2 OPENS at 90, below the 95 stop -> fill at the open (gap is real)
+        a = make_pair([(100, 101, 99, 100, 10), (100, 101, 99, 100, 10),
+                       (90, 91, 89, 90, 10), (90, 91, 89, 90, 10)])
+        sim = run({"A": a}, {"A": (0, 95.0)},
+                  policy=ExitPolicy(stop_mode="resting_stop"))
+        t = sim.trades[0]
+        self.assertAlmostEqual(t["r"], -2.0, places=9)  # 20 units * -10 / 100
+
     def test_costs_are_paid_both_ways(self):
         a = make_pair([(100, 101, 99, 100, 10), (100, 101, 93, 94, 10),
                        (93, 94, 92, 93, 10), (93, 94, 92, 93, 10)])

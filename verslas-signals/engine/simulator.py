@@ -39,6 +39,9 @@ class ExitPolicy:
     trail_lookback: int = 10      # trail stop at N-day low (after partial fill)
     time_stop_bars: int = 10      # exit at market after N bars
     regime_exit: bool = True      # flatten when BTC closes below its SMA50
+    stop_mode: str = "close_confirm"  # or "resting_stop" (fills at the level
+                                      # when the bar's low touches it; at the
+                                      # open if the bar gaps through)
 
 
 class Position:
@@ -219,13 +222,20 @@ class Simulator:
         self.pending_entries = still_entries
 
     def _process_intrabar(self, ts):
-        if self.policy.partial_frac <= 0:
-            return
         for pair, pos in list(self.positions.items()):
-            if pos.half_taken:
-                continue
             i, d = self.bar(pair, ts)
             if i is None or d["volume"][i] <= 0:
+                continue
+            # resting stop order: conservative ordering — if both the stop and
+            # the partial target sit inside one bar, the stop is assumed first
+            if self.policy.stop_mode == "resting_stop":
+                if d["open"][i] <= pos.stop:
+                    self._fill_exit(pair, d["open"][i], ts, reason="stop")
+                    continue
+                if d["low"][i] <= pos.stop:
+                    self._fill_exit(pair, pos.stop, ts, reason="stop")
+                    continue
+            if self.policy.partial_frac <= 0 or pos.half_taken:
                 continue
             target = pos.entry_px + self.policy.partial_r * (pos.entry_px - pos.stop0)
             if d["high"][i] >= target:
@@ -256,7 +266,7 @@ class Simulator:
                 trail = min(d["low"][i - self.policy.trail_lookback + 1:i + 1])
                 pos.stop = max(pos.stop, trail)
             close = d["close"][i]
-            if close < pos.stop:
+            if self.policy.stop_mode == "close_confirm" and close < pos.stop:
                 self.pending_exits.append((pair, "stop"))
             elif pos.bars_held >= self.policy.time_stop_bars:
                 self.pending_exits.append((pair, "time"))
