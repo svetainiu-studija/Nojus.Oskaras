@@ -32,5 +32,8 @@ exp004:
 sprintd:
 	python3 -m engine.sprint_d
 
+sprinte:
+	python3 -m engine.sprint_e
+
 test:
 	python3 -m unittest discover -s tests -v

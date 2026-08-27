@@ -35,5 +35,44 @@ pairs:
   - GRT/USDT
   - CRV/USDT
   - SHIB/USDT
+  # --- widened candidate pool (D-022 / Sprint E). The downloader skips any
+  # pair OKX does not list; skips are recorded in the run log (I2). ---
+  - PEPE/USDT
+  - WIF/USDT
+  - BONK/USDT
+  - FLOKI/USDT
+  - ORDI/USDT
+  - JUP/USDT
+  - TIA/USDT
+  - SEI/USDT
+  - STX/USDT
+  - IMX/USDT
+  - RENDER/USDT
+  - FET/USDT
+  - LDO/USDT
+  - MKR/USDT
+  - COMP/USDT
+  - SNX/USDT
+  - EGLD/USDT
+  - ICP/USDT
+  - HBAR/USDT
+  - CHZ/USDT
+  - ENJ/USDT
+  - DYDX/USDT
+  - GALA/USDT
+  - APE/USDT
+  - MINA/USDT
+  - FLOW/USDT
+  - XTZ/USDT
+  - EOS/USDT
+  - THETA/USDT
+  - IOTA/USDT
+  - AR/USDT
+  - WLD/USDT
+  - OKB/USDT
+  - KSM/USDT
+  - ZIL/USDT
+  - NEO/USDT
+  - QTUM/USDT
 timeframes: ["1d", "4h", "1h"]
 since: "2021-01-01"
