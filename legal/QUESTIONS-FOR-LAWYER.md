@@ -32,6 +32,8 @@ Klausimai:
 
 6. **Steigėjų sutartis.** Ką Lietuvos MB narių sutartis gali ir ko negali užtikrinti: dalių „vesting", intelektinės nuosavybės (kodo, strategijos, prekės ženklo) perleidimas būsimai įmonei, paskyrų/domenų nuosavybė, pasitraukimo („leaver") sąlygos?
 
+7. **Affiliate ribos.** Kada nuoroda į MiCA autorizuotą biržą su „Reklama" atskleidimu yra įprasta reklama, o kada konkrečios biržos rekomendavimas galėtų tapti personalizuota rekomendacija dėl kriptoturto paslaugų naudojimo (MiCA 3 str. 1 d. 24 p.) ar kita reguliuojama veikla? Kokių formuluočių ir praktikų vengti (pvz., biržos parinkimas pagal individualią vartotojo situaciją)?
+
 Jei kuris nors atsakymas būtų „nevienareikšmiška / priklauso" — parašykite tai tiesiai, tada tuo konkrečiu klausimu kreipsimės į fintech srities specialistą.
 
 Ačiū!
@@ -48,5 +50,6 @@ Ačiū!
 4. **Consumer law and privacy.** For a digital-content subscription: correct wording for the 14-day withdrawal-right waiver (Directive 2011/83/EU Art. 16(m)); mandatory imprint details and whether a virtual office address is acceptable; risk-warning wording; "Reklama" labelling of affiliate links (VVTAT practice); privacy policy and lawful basis for the email list (GDPR).
 5. **Entity and payouts.** MB or UAB for two founders? Affiliate and profit-share payouts would arrive in **USDC/USDT** — how does a company account for these correctly (valuation on receipt, conversion to EUR, bank/EMI accounts, source-of-funds documentation)? How to structure member payouts (PIT, Sodra)? Exact conditions and duration of the 0% CIT start-up relief (from 2026)?
 6. **Founder agreement.** What can and cannot a Lithuanian MB members' agreement enforce: vesting of shares, IP assignment (code, strategy, brand) to the future company, ownership of accounts/domains, leaver terms?
+7. **Affiliate boundary.** When is a disclosed affiliate link to a MiCA-authorised exchange ordinary advertising, and when could promoting a particular exchange become a personalised recommendation on the use of crypto-asset services (MiCA Art. 3(1)(24)) or another regulated activity? Which wordings and practices must be avoided (e.g. selecting an exchange based on an individual user's situation)?
 
 If any answer is "ambiguous / it depends" — say so directly; that specific question then goes to a fintech specialist.
