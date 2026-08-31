@@ -450,6 +450,29 @@ reports are history and stay untouched. This same clean-room module is
 then reused for A2 (reproducing the strategy's own 48 trades from the
 hypothesis text). Ships after the second A1 session lands.
 
+## Closure (pre-drafted 2026-08-31; becomes final Fri 2026-09-04)
+
+Status at the Monday sync-day check: every machine-runnable test is
+complete; C1 verified; the optional A4/B5 evidence run has not landed.
+If it lands by Friday, its verdicts complete this section. If not,
+protocol R4 applies as written and pre-agreed: *"whatever is unresolved
+by the deadline resolves conservatively (conclusion stands)"* — A4/B5
+close as NOT RUN / RESOLVED CONSERVATIVELY, and the audit closes
+complete with this final finding:
+
+> **AUDIT-2026-08 CONCLUSION: the EXP-007 verdict (FAILED — NO EDGE /
+> DO NOT TRADE) survived every executed attempt at falsification.
+> Three verified implementation errors were found, fixed,
+> regression-tested, and shown not to change a single trade or any
+> check's outcome. No look-ahead, no cost error, no data defect, no
+> statistical error capable of altering the verdict was found. The one
+> unexecuted item (chart/cross-venue verification) resolves
+> conservatively per R4 and is retained as a permanent caveat: the
+> simulator's agreement with real charts was never independently
+> confirmed — a caveat that could only matter if anyone ever proposed
+> trusting the simulator's POSITIVE output with money, which D-024
+> forbids.**
+
 ## Pending local runs (scripts ship after the A1 review lands)
 
 B1 (`python -m engine.data.audit data/raw`), A2 clean-room rerun, B3
